@@ -1324,50 +1324,78 @@
             const container = document.querySelector('.main-container');
             const btnContainer = document.querySelector('.btn-container');
             const tableWrapper = document.querySelector('.table-wrapper');
+            const headerInfo = document.querySelector('.header-info');
             
             // Hide buttons during capture
             btnContainer.style.display = 'none';
             
-            // Force full width for capture (show all columns)
-            const originalWidth = container.style.width;
-            const originalMinWidth = container.style.minWidth;
-            const originalOverflow = tableWrapper ? tableWrapper.style.overflow : '';
+            // Store original styles
+            const originalStyles = {
+                containerWidth: container.style.width,
+                containerMinWidth: container.style.minWidth,
+                containerPosition: container.style.position,
+                tableOverflow: tableWrapper ? tableWrapper.style.overflow : '',
+                bodyOverflow: document.body.style.overflow
+            };
             
-            container.style.width = '900px';
-            container.style.minWidth = '900px';
+            // Force desktop layout for capture
+            container.style.width = '950px';
+            container.style.minWidth = '950px';
+            container.style.position = 'relative';
             if (tableWrapper) tableWrapper.style.overflow = 'visible';
+            document.body.style.overflow = 'visible';
             
-            // Force all hidden columns to show
+            // Force all hidden columns to show and fix heights
             const style = document.createElement('style');
             style.id = 'capture-style';
             style.textContent = `
                 .yards-white, .yards-red, .wlh-col, .par-red, .si-red { display: table-cell !important; }
                 .scorecard-table { min-width: auto !important; }
+                .main-container { height: auto !important; overflow: visible !important; }
+                .table-wrapper { height: auto !important; overflow: visible !important; }
+                .header-info { display: flex !important; }
+                @media print { body { -webkit-print-color-adjust: exact; } }
             `;
             document.head.appendChild(style);
             
             try {
-                // Small delay to let styles apply
-                await new Promise(resolve => setTimeout(resolve, 100));
+                // Longer delay for iOS to apply styles
+                await new Promise(resolve => setTimeout(resolve, 300));
+                
+                // Scroll to top to ensure full capture
+                window.scrollTo(0, 0);
+                
+                // Get actual dimensions
+                const rect = container.getBoundingClientRect();
+                const captureHeight = Math.max(container.scrollHeight, container.offsetHeight, rect.height);
                 
                 const canvas = await html2canvas(container, {
                     scale: 2,
                     useCORS: true,
                     backgroundColor: '#ffffff',
-                    logging: false,
-                    width: 900,
-                    windowWidth: 1200
+                    logging: true, // Enable for debugging
+                    width: 950,
+                    height: captureHeight,
+                    windowWidth: 1200,
+                    windowHeight: captureHeight + 100,
+                    scrollX: 0,
+                    scrollY: 0,
+                    x: 0,
+                    y: 0
                 });
                 
                 // Restore original styles
-                container.style.width = originalWidth;
-                container.style.minWidth = originalMinWidth;
-                if (tableWrapper) tableWrapper.style.overflow = originalOverflow;
+                container.style.width = originalStyles.containerWidth;
+                container.style.minWidth = originalStyles.containerMinWidth;
+                container.style.position = originalStyles.containerPosition;
+                if (tableWrapper) tableWrapper.style.overflow = originalStyles.tableOverflow;
+                document.body.style.overflow = originalStyles.bodyOverflow;
                 document.getElementById('capture-style')?.remove();
                 btnContainer.style.display = 'flex';
                 
                 const competitionName = document.getElementById('competition')?.value || 'Golf Round';
-                const blob = dataURLtoBlob(canvas.toDataURL('image/png'));
+                const dataURL = canvas.toDataURL('image/png');
+                const blob = dataURLtoBlob(dataURL);
                 
                 // Try native share with file
                 if (navigator.share) {
@@ -1383,7 +1411,7 @@
                             return;
                         }
                     } catch (e) {
-                        console.log('File share not supported, trying fallback');
+                        console.log('File share failed, trying fallback:', e);
                     }
                 }
                 
@@ -1405,14 +1433,16 @@
                 
             } catch (err) {
                 // Restore styles on error
-                container.style.width = originalWidth;
-                container.style.minWidth = originalMinWidth;
-                if (tableWrapper) tableWrapper.style.overflow = originalOverflow;
+                container.style.width = originalStyles.containerWidth;
+                container.style.minWidth = originalStyles.containerMinWidth;
+                container.style.position = originalStyles.containerPosition;
+                if (tableWrapper) tableWrapper.style.overflow = originalStyles.tableOverflow;
+                document.body.style.overflow = originalStyles.bodyOverflow;
                 document.getElementById('capture-style')?.remove();
                 btnContainer.style.display = 'flex';
                 
                 console.error('Share failed:', err);
-                alert('Sharing failed. Please try again.');
+                alert('Sharing failed: ' + err.message);
             }
         }
 
