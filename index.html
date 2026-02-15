@@ -1091,6 +1091,20 @@
             saveData();
         }
 
+        // Update SI (Stroke Index) and recalculate
+        function updateSI(input, hole, siType) {
+            const value = parseInt(input.value) || 1;
+            
+            const allData = [...courseData.front, ...courseData.back];
+            const holeData = allData.find(h => h.hole === hole);
+            if (holeData) {
+                holeData[siType] = value;
+            }
+            
+            calculateAllStableford();
+            saveData();
+        }
+
         // Calculate all yardage totals
         function calculateYardageTotals() {
             // Front 9 totals
@@ -1151,7 +1165,7 @@
                     <td class="yards-white"><input type="number" value="${holeData.white}" style="width:40px;text-align:center;border:none;" onchange="updateYardage(this, ${holeData.hole}, 'white')"></td>
                     <td class="yards-yellow"><input type="number" value="${holeData.yellow}" style="width:40px;text-align:center;border:none;background:transparent;font-weight:bold;" onchange="updateYardage(this, ${holeData.hole}, 'yellow')"></td>
                     <td class="par-col"><input type="number" value="${holeData.par}" style="width:25px;text-align:center;border:none;font-weight:bold;" onchange="updatePar(this, ${holeData.hole})"></td>
-                    <td class="si-col">${holeData.si}</td>
+                    <td class="si-col"><input type="number" value="${holeData.si}" style="width:25px;text-align:center;border:none;background:transparent;font-weight:bold;" onchange="updateSI(this, ${holeData.hole}, 'si')"></td>
                     <td class="player-score" id="score_A_${holeData.hole}">
                         <input type="number" min="0" max="15" onchange="updateScore('A', ${holeData.hole}, this.value)" onkeydown="handleScoreKey(event, 'A', ${holeData.hole})">
                     </td>
@@ -1167,7 +1181,7 @@
                     <td class="wlh-col"></td>
                     <td class="yards-red"><input type="number" value="${holeData.red}" style="width:40px;text-align:center;border:none;color:#cc0000;font-weight:bold;background:transparent;" onchange="updateYardage(this, ${holeData.hole}, 'red')"></td>
                     <td class="par-red"><input type="number" value="${holeData.parRed}" style="width:25px;text-align:center;border:none;color:#cc0000;font-weight:bold;background:transparent;" onchange="updateParRed(this, ${holeData.hole})"></td>
-                    <td class="si-red">${holeData.siRed}</td>
+                    <td class="si-red"><input type="number" value="${holeData.siRed}" style="width:25px;text-align:center;border:none;color:#cc0000;font-weight:bold;background:transparent;" onchange="updateSI(this, ${holeData.hole}, 'siRed')"></td>
                 </tr>
             `;
         }
