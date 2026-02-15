@@ -1285,7 +1285,7 @@
                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         }
 
-        // Convert dataURL to Blob (iOS compatible)
+        // Convert dataURL to Blob
         function dataURLtoBlob(dataURL) {
             const arr = dataURL.split(',');
             const mime = arr[0].match(/:(.*?);/)[1];
@@ -1302,88 +1302,96 @@
         async function shareToWhatsApp() {
             const container = document.querySelector('.main-container');
             const btnContainer = document.querySelector('.btn-container');
+            const tableWrapper = document.querySelector('.table-wrapper');
+            
+            // Hide buttons during capture
             btnContainer.style.display = 'none';
             
+            // Force full width for capture (show all columns)
+            const originalWidth = container.style.width;
+            const originalMinWidth = container.style.minWidth;
+            const originalOverflow = tableWrapper ? tableWrapper.style.overflow : '';
+            
+            container.style.width = '900px';
+            container.style.minWidth = '900px';
+            if (tableWrapper) tableWrapper.style.overflow = 'visible';
+            
+            // Force all hidden columns to show
+            const style = document.createElement('style');
+            style.id = 'capture-style';
+            style.textContent = `
+                .yards-white, .yards-red, .wlh-col, .par-red, .si-red { display: table-cell !important; }
+                .scorecard-table { min-width: auto !important; }
+            `;
+            document.head.appendChild(style);
+            
             try {
-                // Create canvas with html2canvas
+                // Small delay to let styles apply
+                await new Promise(resolve => setTimeout(resolve, 100));
+                
                 const canvas = await html2canvas(container, {
                     scale: 2,
                     useCORS: true,
                     backgroundColor: '#ffffff',
                     logging: false,
-                    allowTaint: true
+                    width: 900,
+                    windowWidth: 1200
                 });
                 
+                // Restore original styles
+                container.style.width = originalWidth;
+                container.style.minWidth = originalMinWidth;
+                if (tableWrapper) tableWrapper.style.overflow = originalOverflow;
+                document.getElementById('capture-style')?.remove();
                 btnContainer.style.display = 'flex';
                 
                 const competitionName = document.getElementById('competition')?.value || 'Golf Round';
-                const dataURL = canvas.toDataURL('image/png');
+                const blob = dataURLtoBlob(canvas.toDataURL('image/png'));
                 
-                // Try Web Share API first (works on most mobile browsers)
+                // Try native share with file
                 if (navigator.share) {
                     try {
-                        // Convert to blob for sharing
-                        const blob = dataURLtoBlob(dataURL);
-                        const file = new File([blob], 'golf-scorecard.png', { 
-                            type: 'image/png',
-                            lastModified: Date.now()
-                        });
+                        const file = new File([blob], 'golf-scorecard.png', { type: 'image/png' });
                         
-                        const shareData = {
-                            title: 'Golf Scorecard',
-                            text: `Golf Scorecard - ${competitionName}`
-                        };
-                        
-                        // Check if file sharing is supported
                         if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                            shareData.files = [file];
+                            await navigator.share({
+                                files: [file],
+                                title: 'Golf Scorecard',
+                                text: `Golf Scorecard - ${competitionName}`
+                            });
+                            return;
                         }
-                        
-                        await navigator.share(shareData);
-                        return;
-                    } catch (shareErr) {
-                        console.log('Web Share failed, trying fallback:', shareErr);
+                    } catch (e) {
+                        console.log('File share not supported, trying fallback');
                     }
                 }
                 
-                // Fallback for iOS and other devices
-                if (isIOS()) {
-                    // iOS: Open image in new tab, user can save and share
-                    const newTab = window.open();
-                    if (newTab) {
-                        newTab.document.write(`
-                            <html>
-                            <head><title>Golf Scorecard</title></head>
-                            <body style="margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f0f0f0;">
-                                <div style="text-align:center;">
-                                    <p style="font-family:Arial;margin-bottom:10px;">Tap and hold image to save, then share to WhatsApp</p>
-                                    <img src="${dataURL}" style="max-width:100%;height:auto;border:1px solid #ccc;">
-                                </div>
-                            </body>
-                            </html>
-                        `);
-                        newTab.document.close();
-                    } else {
-                        alert('Please allow popups to save the scorecard image.');
-                    }
-                } else {
-                    // Desktop/Android fallback: Download file
-                    const a = document.createElement('a');
-                    a.href = dataURL;
-                    a.download = 'golf-scorecard.png';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    
-                    setTimeout(() => {
+                // Fallback: Download and prompt
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'golf-scorecard.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                setTimeout(() => {
+                    if (confirm('Image saved! Open WhatsApp to share?')) {
                         window.open('https://wa.me/?text=' + encodeURIComponent(`Golf Scorecard - ${competitionName}`), '_blank');
-                        alert('Image downloaded! Attach it in WhatsApp.');
-                    }, 500);
-                }
+                    }
+                }, 300);
+                
             } catch (err) {
+                // Restore styles on error
+                container.style.width = originalWidth;
+                container.style.minWidth = originalMinWidth;
+                if (tableWrapper) tableWrapper.style.overflow = originalOverflow;
+                document.getElementById('capture-style')?.remove();
                 btnContainer.style.display = 'flex';
+                
                 console.error('Share failed:', err);
-                alert('Sharing failed: ' + err.message + '. Please try again.');
+                alert('Sharing failed. Please try again.');
             }
         }
 
