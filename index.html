@@ -728,11 +728,23 @@
         function calculateStableford(gross, par, si, playingHcap) {
             if (!gross || gross === '') return 0;
             
-            // Calculate strokes received on this hole
+            // Calculate strokes received/given on this hole
             let strokesReceived = 0;
-            if (playingHcap >= si) strokesReceived = 1;
-            if (playingHcap >= si + 18) strokesReceived = 2;
-            if (playingHcap >= si + 36) strokesReceived = 3;
+            
+            if (playingHcap >= 0) {
+                // Positive handicap: receive strokes on lowest SI holes first
+                if (playingHcap >= si) strokesReceived = 1;
+                if (playingHcap >= si + 18) strokesReceived = 2;
+                if (playingHcap >= si + 36) strokesReceived = 3;
+            } else {
+                // Negative handicap: GIVE strokes on highest SI holes first (18, 17, 16...)
+                // E.g., -3 handicap gives shots on SI 18, 17, 16
+                const absHcap = Math.abs(playingHcap);
+                const giveThreshold = 19 - absHcap; // For -3: threshold = 16, so SI >= 16 gives a shot
+                if (si >= giveThreshold) strokesReceived = -1;
+                // For very low handicaps (below -18), give 2 shots on highest SI
+                if (absHcap > 18 && si >= (37 - absHcap)) strokesReceived = -2;
+            }
             
             const adjustedPar = par + strokesReceived;
             const diff = adjustedPar - parseInt(gross);
