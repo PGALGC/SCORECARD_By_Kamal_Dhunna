@@ -445,10 +445,10 @@
             <div class="competition-box">
                 <table style="width:100%;">
                     <colgroup>
-                        <col style="width:150px;">
+                        <col style="width:80px;">
                         <col style="width:auto;">
-                        <col style="width:80px;">
-                        <col style="width:80px;">
+                        <col style="width:70px;">
+                        <col style="width:70px;">
                     </colgroup>
                     <tr>
                         <td style="font-weight:bold;">COMPETITION</td>
@@ -472,26 +472,26 @@
                         <th>Playing<br>H'Cap</th>
                     </tr>
                     <tr>
-                        <td>Player A - <input type="text" id="playerA" placeholder="Name" style="width:80px;border:none;background:transparent;"></td>
-                        <td></td>
+                        <td>Player A</td>
+                        <td><input type="text" id="playerA" placeholder="Name" style="width:100%;" oninput="updatePlayerHeader('A')"></td>
                         <td><input type="number" id="hcapA" class="handicap-input" style="width:100%;text-align:center;" placeholder="0" onchange="calculatePlayingHcapForPlayer('A')"></td>
                         <td><input type="number" id="playingHcapA" style="width:100%;text-align:center;" value="0" onchange="recalculatePlayerScores('A')"></td>
                     </tr>
                     <tr>
-                        <td>Player B - <input type="text" id="playerB" placeholder="Name" style="width:80px;border:none;background:transparent;"></td>
-                        <td></td>
+                        <td>Player B</td>
+                        <td><input type="text" id="playerB" placeholder="Name" style="width:100%;" oninput="updatePlayerHeader('B')"></td>
                         <td><input type="number" id="hcapB" class="handicap-input" style="width:100%;text-align:center;" placeholder="0" onchange="calculatePlayingHcapForPlayer('B')"></td>
                         <td><input type="number" id="playingHcapB" style="width:100%;text-align:center;" value="0" onchange="recalculatePlayerScores('B')"></td>
                     </tr>
                     <tr>
-                        <td>Player C - <input type="text" id="playerC" placeholder="Name" style="width:80px;border:none;background:transparent;"></td>
-                        <td></td>
+                        <td>Player C</td>
+                        <td><input type="text" id="playerC" placeholder="Name" style="width:100%;" oninput="updatePlayerHeader('C')"></td>
                         <td><input type="number" id="hcapC" class="handicap-input" style="width:100%;text-align:center;" placeholder="0" onchange="calculatePlayingHcapForPlayer('C')"></td>
                         <td><input type="number" id="playingHcapC" style="width:100%;text-align:center;" value="0" onchange="recalculatePlayerScores('C')"></td>
                     </tr>
                     <tr>
-                        <td>Player D - <input type="text" id="playerD" placeholder="Name" style="width:80px;border:none;background:transparent;"></td>
-                        <td></td>
+                        <td>Player D</td>
+                        <td><input type="text" id="playerD" placeholder="Name" style="width:100%;" oninput="updatePlayerHeader('D')"></td>
                         <td><input type="number" id="hcapD" class="handicap-input" style="width:100%;text-align:center;" placeholder="0" onchange="calculatePlayingHcapForPlayer('D')"></td>
                         <td><input type="number" id="playingHcapD" style="width:100%;text-align:center;" value="0" onchange="recalculatePlayerScores('D')"></td>
                     </tr>
@@ -539,10 +539,10 @@
                     <th class="yards-yellow">Yellow<br>Yards</th>
                     <th>Par</th>
                     <th class="si-col">SI</th>
-                    <th>Player A</th>
-                    <th>Player B</th>
-                    <th>Player C</th>
-                    <th>Player D</th>
+                    <th id="headerA">Player A</th>
+                    <th id="headerB">Player B</th>
+                    <th id="headerC">Player C</th>
+                    <th id="headerD">Player D</th>
                     <th>W/L/H<br>Pts</th>
                     <th class="yards-red">Red<br>Yards</th>
                     <th class="par-red">Par</th>
@@ -1021,6 +1021,22 @@
             calculateAllStableford();
         }
 
+        // Update player name in scorecard header
+        function updatePlayerHeader(player) {
+            const nameInput = document.getElementById('player' + player);
+            const header = document.getElementById('header' + player);
+            if (nameInput && header) {
+                const name = nameInput.value.trim();
+                header.textContent = name || 'Player ' + player;
+            }
+            saveData();
+        }
+
+        // Update all player headers (called on load)
+        function updateAllPlayerHeaders() {
+            ['A', 'B', 'C', 'D'].forEach(p => updatePlayerHeader(p));
+        }
+
         // Update yardage and recalculate totals
         function updateYardage(input, hole, teeColor) {
             const value = parseInt(input.value) || 0;
@@ -1227,6 +1243,7 @@
                     }
                     
                     calculateAllStableford();
+                    updateAllPlayerHeaders();
                     console.log('Data loaded successfully');
                 } catch(e) {
                     console.error('Error loading data:', e);
