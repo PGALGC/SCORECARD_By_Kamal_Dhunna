@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Golf Scorecard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background: #f5f5dc;
+            padding: 10px;
+            max-width: 1200px;
+            margin: 0 auto;
+            font-size: 14px;
+        }
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: white;
+            border-radius: 8px;
+        }
+        .app-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .golf-icon {
+            font-size: 20px;
+        }
+        .course-ratings {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .course-ratings input {
+            background: rgba(255,255,255,0.9);
+            border-radius: 3px;
+        }
+        @media (max-width: 767px) {
+            .header-info {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+            .course-ratings {
+                display: none;
+            }
+        }
+        .main-container {
+            background: white;
+            border: 2px solid #333;
+            padding: 8px;
+            overflow-x: auto;
+        }
+        .top-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        @media (min-width: 768px) {
+            .top-section {
+                display: grid;
+                grid-template-columns: 1fr 300px;
+            }
+            .header-info {
+                display: block;
+            }
+            body {
+                padding: 20px;
+            }
+        }
+        .competition-box {
+            border: 1px solid #333;
+        }
+        .competition-box table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .competition-box td, .competition-box th {
+            border: 1px solid #333;
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+        .competition-box input {
+            width: 100%;
+            border: none;
+            font-size: 12px;
+            padding: 2px;
+        }
+        .tee-box {
+            border: 1px solid #333;
+        }
+        .tee-box table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .tee-box td, .tee-box th {
+            border: 1px solid #333;
+            padding: 4px;
+            font-size: 11px;
+            text-align: center;
+        }
+        .par-label {
+            font-weight: bold;
+        }
+        .color-key {
+            margin-top: 8px;
+            padding: 8px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .color-key-title {
+            font-weight: bold;
+            font-size: 10px;
+            text-align: center;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .color-key-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            justify-content: center;
+        }
+        .key-item {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 9px;
+            padding: 2px 4px;
+            background: white;
+            border-radius: 3px;
+        }
+        .key-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 10px;
+        }
+        .scorecard-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+        .scorecard-table th, .scorecard-table td {
+            border: 1px solid #333;
+            padding: 4px 2px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .scorecard-table th {
+            background: #f0f0f0;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        .hole-num {
+            font-weight: bold;
+            width: 30px;
+            position: sticky;
+            left: 0;
+            background: white;
+            z-index: 1;
+        }
+        .yards-white {
+            width: 45px;
+        }
+        .yards-yellow {
+            background: #FFD700 !important;
+            width: 45px;
+            font-weight: bold;
+        }
+        .par-col {
+            width: 30px;
+            font-weight: bold;
+        }
+        .si-col {
+            background: #FFD700 !important;
+            width: 30px;
+        }
+        .player-score {
+            width: 55px;
+            min-height: 44px;
+            vertical-align: middle;
+            padding: 2px !important;
+        }
+        .player-score input {
+            width: 100%;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 8px 2px;
+            min-height: 44px;
+        }
+        /* Mobile-friendly touch targets */
+        @media (max-width: 767px) {
+            .scorecard-table th, .scorecard-table td {
+                padding: 6px 3px;
+                font-size: 11px;
+            }
+            .player-score {
+                min-width: 50px;
+            }
+            .yards-white, .yards-red {
+                display: none;
+            }
+            .wlh-col {
+                display: none;
+            }
+        }
+        /* Hide number input spinners */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+        .score-display {
+            cursor: pointer;
+            padding: 8px 4px;
+            font-size: 14px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .score-display:hover, .score-display:active {
+            background: #e8e8e8;
+        }
+        .btn-container {
+            text-align: center;
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-container button {
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            min-width: 90px;
+            height: 36px;
+            touch-action: manipulation;
+        }
+        .whatsapp-btn {
+            background: #25D366;
+        }
+        .whatsapp-btn:hover, .whatsapp-btn:active {
+            background: #128C7E;
+        }
+        .new-round-btn {
+            background: #007bff;
+        }
+        .new-round-btn:hover, .new-round-btn:active {
+            background: #0056b3;
+        }
+        .clear-btn {
+            background: #dc3545;
+        }
+        .clear-btn:hover, .clear-btn:active {
+            background: #c82333;
+        }
+        .save-indicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #28a745;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+        .save-indicator.show {
+            opacity: 1;
+        }
+        .stableford-pts {
+            font-size: 11px;
+            margin-top: 2px;
+        }
+        .stableford-pts strong {
+            font-weight: bold;
+        }
+        .gross-display {
+            font-weight: bold;
+            color: #000;
+        }
+        /* Stableford colors: 0=Double Bogey(pink), 1=Bogey(purple), 2=Par(black), 3=Birdie(red), 4=Eagle(blue), 5=Albatross(green) */
+        .pts-0 { color: #FF69B4; font-weight: bold; } /* Double Bogey - Pink */
+        .pts-1 { color: #800080; font-weight: bold; } /* Bogey - Purple */
+        .pts-2 { color: #000000; font-weight: bold; } /* Par - Black */
+        .pts-3 { color: #cc0000; font-weight: bold; } /* Birdie - Red */
+        .pts-4 { color: #0066cc; font-weight: bold; } /* Eagle - Blue */
+        .pts-5 { color: #009900; font-weight: bold; } /* Albatross - Green */
+        .pts-ns { color: #FFD700; font-weight: bold; background: #333; padding: 0 3px; } /* No Score - Yellow */
+        .wlh-col {
+            width: 40px;
+        }
+        .yards-red {
+            color: #cc0000;
+            width: 45px;
+            font-weight: bold;
+        }
+        .par-red {
+            color: #cc0000;
+            width: 30px;
+            font-weight: bold;
+        }
+        .si-red {
+            color: #cc0000;
+            width: 30px;
+        }
+        .totals-row td {
+            font-weight: bold;
+            background: #f8f8f8;
+        }
+        .out-row td, .in-row td {
+            font-weight: bold;
+            background: #ffffcc;
+        }
+        .divider-row {
+            background: #cc0000 !important;
+            color: white !important;
+            font-size: 10px !important;
+            font-weight: bold;
+        }
+        .divider-row td {
+            background: #cc0000 !important;
+            color: white !important;
+            padding: 5px !important;
+        }
+        .bottom-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        @media (min-width: 768px) {
+            .bottom-section {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+        }
+        .result-box {
+            border: 1px solid #333;
+            padding: 10px;
+        }
+        .result-box table {
+            width: 100%;
+        }
+        .result-box td {
+            padding: 3px;
+        }
+        .result-box input {
+            width: 80px;
+            border: 1px solid #ccc;
+            padding: 2px;
+        }
+        .signature-section {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .signature-line {
+            border-bottom: 1px dotted #333;
+            width: 45%;
+            padding: 5px;
+            font-size: 12px;
+        }
+        .editable {
+            background: #ffffd0;
+        }
+        .player-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .player-header input {
+            width: 50px;
+            text-align: center;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+        .handicap-input {
+            background: #e0ffe0 !important;
+        }
+        h3 {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="save-indicator" id="saveIndicator">✓ Saved</div>
+    <div class="header-info">
+        <div class="app-title">
+            <span class="golf-icon">⛳</span>
+            <span>Scorecard by Kamal Dhunna</span>
+        </div>
+        <div class="course-ratings">
+            White: <input type="text" id="slopeWhite" value="128/71.5" style="width:70px;text-align:center;font-size:11px;">
+            Yellow(M): <input type="text" id="slopeYellowM" value="123/70.1" style="width:70px;text-align:center;font-size:11px;">
+            (W): <input type="text" id="slopeYellowW" value="133/75.7" style="width:70px;text-align:center;font-size:11px;">
+            Red: <input type="text" id="slopeRed" value="127/72.5" style="width:70px;text-align:center;font-size:11px;">
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="top-section">
+            <div class="competition-box">
+                <table>
+                    <tr>
+                        <td style="font-weight:bold;">COMPETITION</td>
+                        <td colspan="3"><input type="text" id="competition" placeholder="Competition Name" style="width:100%;"></td>
+                    </tr>
+                    <tr>
+                        <td>DATE</td>
+                        <td><input type="date" id="date"></td>
+                        <td>START</td>
+                        <td><input type="time" id="startTime"></td>
+                    </tr>
+                    <tr>
+                        <td>FINISH</td>
+                        <td><input type="time" id="finishTime"></td>
+                        <td colspan="2"></td>
+                    </tr>
+                </table>
+                <table style="margin-top:5px;">
+                    <tr style="background:#f0f0f0;">
+                        <th style="width:80px;">Player</th>
+                        <th style="width:120px;">Name</th>
+                        <th style="width:60px;">H'Cap<br>Index</th>
+                        <th style="width:60px;">Playing<br>H'Cap</th>
+                    </tr>
+                    <tr>
+                        <td>Player A</td>
+                        <td><input type="text" id="playerA" placeholder="Name" style="width:100%;"></td>
+                        <td><input type="number" id="hcapA" class="handicap-input" style="width:50px;" placeholder="0" onchange="calculatePlayingHcapForPlayer('A')"></td>
+                        <td><input type="number" id="playingHcapA" style="width:50px;text-align:center;" value="0" onchange="recalculatePlayerScores('A')"></td>
+                    </tr>
+                    <tr>
+                        <td>Player B</td>
+                        <td><input type="text" id="playerB" placeholder="Name" style="width:100%;"></td>
+                        <td><input type="number" id="hcapB" class="handicap-input" style="width:50px;" placeholder="0" onchange="calculatePlayingHcapForPlayer('B')"></td>
+                        <td><input type="number" id="playingHcapB" style="width:50px;text-align:center;" value="0" onchange="recalculatePlayerScores('B')"></td>
+                    </tr>
+                    <tr>
+                        <td>Player C</td>
+                        <td><input type="text" id="playerC" placeholder="Name" style="width:100%;"></td>
+                        <td><input type="number" id="hcapC" class="handicap-input" style="width:50px;" placeholder="0" onchange="calculatePlayingHcapForPlayer('C')"></td>
+                        <td><input type="number" id="playingHcapC" style="width:50px;text-align:center;" value="0" onchange="recalculatePlayerScores('C')"></td>
+                    </tr>
+                    <tr>
+                        <td>Player D</td>
+                        <td><input type="text" id="playerD" placeholder="Name" style="width:100%;"></td>
+                        <td><input type="number" id="hcapD" class="handicap-input" style="width:50px;" placeholder="0" onchange="calculatePlayingHcapForPlayer('D')"></td>
+                        <td><input type="number" id="playingHcapD" style="width:50px;text-align:center;" value="0" onchange="recalculatePlayerScores('D')"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="tee-box">
+                <table>
+                    <tr>
+                        <th colspan="2">PLEASE INDICATE<br>WHICH TEE USED</th>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="tee" id="teeWhite" checked onchange="updateTeeSelection()"> White</td>
+                        <td class="par-label">PAR <span id="parWhite">71</span></td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="tee" id="teeYellow" onchange="updateTeeSelection()"> Yellow</td>
+                        <td class="par-label">PAR <span id="parYellow">71</span></td>
+                    </tr>
+                    <tr>
+                        <td><input type="radio" name="tee" id="teeRed" onchange="updateTeeSelection()"> Red</td>
+                        <td class="par-label">PAR <span id="parRed">72</span></td>
+                    </tr>
+                </table>
+                <div class="color-key">
+                    <div class="color-key-title">STABLEFORD KEY</div>
+                    <div class="color-key-items">
+                        <span class="key-item"><span class="key-dot" style="background:#000;"></span>Par</span>
+                        <span class="key-item"><span class="key-dot" style="background:#cc0000;"></span>Birdie</span>
+                        <span class="key-item"><span class="key-dot" style="background:#0066cc;"></span>Eagle</span>
+                        <span class="key-item"><span class="key-dot" style="background:#009900;"></span>Albatross</span>
+                        <span class="key-item"><span class="key-dot" style="background:#800080;"></span>Bogey</span>
+                        <span class="key-item"><span class="key-dot" style="background:#FF69B4;"></span>Dbl Bogey</span>
+                        <span class="key-item"><span class="key-dot" style="background:#FFD700;border:1px solid #333;"></span>NS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+        <table class="scorecard-table" id="scorecardTable">
+            <thead>
+                <tr>
+                    <th>Hole</th>
+                    <th>White<br>Yards</th>
+                    <th class="yards-yellow">Yellow<br>Yards</th>
+                    <th>Par</th>
+                    <th class="si-col">SI</th>
+                    <th>Player A</th>
+                    <th>Player B</th>
+                    <th>Player C</th>
+                    <th>Player D</th>
+                    <th>W/L/H<br>Pts</th>
+                    <th class="yards-red">Red<br>Yards</th>
+                    <th class="par-red">Par</th>
+                    <th class="si-red">SI</th>
+                </tr>
+            </thead>
+            <tbody id="frontNine">
+                <!-- Front 9 will be populated by JS -->
+            </tbody>
+            <tbody>
+                <tr class="out-row">
+                    <td></td>
+                    <td id="outWhite">3123</td>
+                    <td class="yards-yellow" id="outYellow">2975</td>
+                    <td id="outPar">35</td>
+                    <td class="si-col">OUT</td>
+                    <td id="outA">-</td>
+                    <td id="outB">-</td>
+                    <td id="outC">-</td>
+                    <td id="outD">-</td>
+                    <td></td>
+                    <td class="yards-red" id="outRed">2799</td>
+                    <td class="par-red" id="outParRed">36</td>
+                    <td></td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr class="divider-row">
+                    <td colspan="13">PLEASE REMEMBER TO REPLACE DIVOTS, REPAIR PITCH MARKS & AVOID SLOW PLAY</td>
+                </tr>
+            </tbody>
+            <tbody id="backNine">
+                <!-- Back 9 will be populated by JS -->
+            </tbody>
+            <tbody>
+                <tr class="in-row">
+                    <td></td>
+                    <td id="inWhite">3292</td>
+                    <td class="yards-yellow" id="inYellow">3124</td>
+                    <td id="inPar">36</td>
+                    <td class="si-col">IN</td>
+                    <td id="inA">-</td>
+                    <td id="inB">-</td>
+                    <td id="inC">-</td>
+                    <td id="inD">-</td>
+                    <td></td>
+                    <td class="yards-red" id="inRed">2733</td>
+                    <td class="par-red" id="inParRed">36</td>
+                    <td></td>
+                </tr>
+                <tr class="out-row">
+                    <td></td>
+                    <td id="totalWhiteOut">3123</td>
+                    <td class="yards-yellow" id="totalYellowOut">2975</td>
+                    <td id="totalParOut">35</td>
+                    <td class="si-col">OUT</td>
+                    <td id="totalOutA">-</td>
+                    <td id="totalOutB">-</td>
+                    <td id="totalOutC">-</td>
+                    <td id="totalOutD">-</td>
+                    <td></td>
+                    <td class="yards-red" id="totalRedOut">2799</td>
+                    <td class="par-red" id="totalParRedOut">36</td>
+                    <td></td>
+                </tr>
+                <tr class="totals-row">
+                    <td></td>
+                    <td id="totalWhite">6415</td>
+                    <td class="yards-yellow" id="totalYellow">6099</td>
+                    <td id="totalPar">71</td>
+                    <td class="si-col">TOTAL</td>
+                    <td id="totalA">-</td>
+                    <td id="totalB">-</td>
+                    <td id="totalC">-</td>
+                    <td id="totalD">-</td>
+                    <td></td>
+                    <td class="yards-red" id="totalRed">5532</td>
+                    <td class="par-red" id="totalParRed">72</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+
+        <div class="bottom-section">
+            <div class="result-box">
+                <table>
+                    <tr>
+                        <td>NETT RESULT</td>
+                        <td><input type="text" id="nettResult"></td>
+                        <td>HANDICAP</td>
+                        <td><input type="text" id="handicap"></td>
+                    </tr>
+                    <tr>
+                        <td>OR</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>STABLEFORD<br>POINTS</td>
+                        <td><strong id="stablefordTotal">0</strong></td>
+                        <td>NETT</td>
+                        <td><input type="text" id="nett"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="result-box">
+                <table>
+                    <tr>
+                        <td>Holes Won</td>
+                        <td><input type="text" id="holesWon"></td>
+                    </tr>
+                    <tr>
+                        <td>Holes Lost</td>
+                        <td><input type="text" id="holesLost"></td>
+                    </tr>
+                    <tr>
+                        <td>Result</td>
+                        <td><input type="text" id="result"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="signature-section">
+            <div class="signature-line">Marker's Signature</div>
+            <div class="signature-line">Player's Signature</div>
+        </div>
+
+        <div class="btn-container">
+            <button class="whatsapp-btn" onclick="shareToWhatsApp()">
+                📱 Share
+            </button>
+            <button class="new-round-btn" onclick="newRound()">
+                🏌️ New Round
+            </button>
+            <button class="clear-btn" onclick="clearAllData()">
+                🗑️ Clear All
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script>
+        // Course data from the scorecard image
+        const courseData = {
+            front: [
+                { hole: 1, white: 288, yellow: 271, par: 4, si: 16, red: 245, parRed: 4, siRed: 12 },
+                { hole: 2, white: 191, yellow: 183, par: 3, si: 10, red: 182, parRed: 3, siRed: 16 },
+                { hole: 3, white: 405, yellow: 398, par: 4, si: 4, red: 372, parRed: 4, siRed: 2 },
+                { hole: 4, white: 381, yellow: 363, par: 4, si: 6, red: 320, parRed: 4, siRed: 6 },
+                { hole: 5, white: 355, yellow: 353, par: 4, si: 14, red: 335, parRed: 4, siRed: 8 },
+                { hole: 6, white: 416, yellow: 410, par: 4, si: 2, red: 399, parRed: 5, siRed: 14 },
+                { hole: 7, white: 561, yellow: 505, par: 5, si: 8, red: 491, parRed: 5, siRed: 4 },
+                { hole: 8, white: 175, yellow: 156, par: 3, si: 12, red: 141, parRed: 3, siRed: 18 },
+                { hole: 9, white: 351, yellow: 336, par: 4, si: 18, red: 314, parRed: 4, siRed: 10 }
+            ],
+            back: [
+                { hole: 10, white: 401, yellow: 388, par: 4, si: 5, red: 352, parRed: 4, siRed: 3 },
+                { hole: 11, white: 367, yellow: 360, par: 4, si: 7, red: 325, parRed: 4, siRed: 7 },
+                { hole: 12, white: 491, yellow: 472, par: 5, si: 17, red: 424, parRed: 5, siRed: 11 },
+                { hole: 13, white: 397, yellow: 390, par: 4, si: 1, red: 347, parRed: 4, siRed: 1 },
+                { hole: 14, white: 164, yellow: 148, par: 3, si: 13, red: 130, parRed: 3, siRed: 17 },
+                { hole: 15, white: 372, yellow: 326, par: 4, si: 9, red: 254, parRed: 4, siRed: 13 },
+                { hole: 16, white: 476, yellow: 459, par: 5, si: 15, red: 424, parRed: 5, siRed: 9 },
+                { hole: 17, white: 184, yellow: 172, par: 3, si: 11, red: 129, parRed: 3, siRed: 15 },
+                { hole: 18, white: 440, yellow: 409, par: 4, si: 3, red: 348, parRed: 4, siRed: 5 }
+            ]
+        };
+
+        const players = ['A', 'B', 'C', 'D'];
+        let scores = {};
+
+        // Initialize scores object
+        function initScores() {
+            players.forEach(p => {
+                scores[p] = {};
+                for (let i = 1; i <= 18; i++) {
+                    scores[p][i] = { gross: null, stableford: 0 };
+                }
+            });
+        }
+
+        // Calculate stableford points
+        function calculateStableford(gross, par, si, playingHcap) {
+            if (!gross || gross === '') return 0;
+            
+            // Calculate strokes received on this hole
+            let strokesReceived = 0;
+            if (playingHcap >= si) strokesReceived = 1;
+            if (playingHcap >= si + 18) strokesReceived = 2;
+            if (playingHcap >= si + 36) strokesReceived = 3;
+            
+            const adjustedPar = par + strokesReceived;
+            const diff = adjustedPar - parseInt(gross);
+            
+            // Stableford points: 0 = double bogey or worse, 1 = bogey, 2 = par, 3 = birdie, 4 = eagle, 5 = albatross
+            const points = Math.max(0, diff + 2);
+            return Math.min(points, 5);
+        }
+
+        // Get stroke index for a hole based on selected tee
+        function getStrokeIndex(hole) {
+            const tee = getSelectedTee();
+            const allData = [...courseData.front, ...courseData.back];
+            const holeData = allData.find(h => h.hole === hole);
+            return tee === 'red' ? holeData.siRed : holeData.si;
+        }
+
+        // Get par for a hole based on selected tee
+        function getPar(hole) {
+            const tee = getSelectedTee();
+            const allData = [...courseData.front, ...courseData.back];
+            const holeData = allData.find(h => h.hole === hole);
+            return tee === 'red' ? holeData.parRed : holeData.par;
+        }
+
+        // WHS Course data for playing handicap calculation
+        const courseRatings = {
+            white: { slope: 128, cr: 71.5, par: 71 },
+            yellow: { slope: 123, cr: 70.1, par: 71 },
+            red: { slope: 127, cr: 72.5, par: 72 }
+        };
+
+        // Get selected tee
+        function getSelectedTee() {
+            if (document.getElementById('teeWhite').checked) return 'white';
+            if (document.getElementById('teeYellow').checked) return 'yellow';
+            if (document.getElementById('teeRed').checked) return 'red';
+            return 'white';
+        }
+
+        // Calculate WHS Playing Handicap
+        // Formula: Playing Handicap = (Handicap Index × (Slope Rating ÷ 113)) + (Course Rating - Par)
+        function calculatePlayingHcap(handicapIndex) {
+            const tee = getSelectedTee();
+            const rating = courseRatings[tee];
+            const playingHcap = (handicapIndex * (rating.slope / 113)) + (rating.cr - rating.par);
+            return Math.round(playingHcap);
+        }
+
+        // Get playing handicap for a player (from the editable field)
+        function getPlayingHcap(player) {
+            const playingHcapInput = document.getElementById('playingHcap' + player);
+            return playingHcapInput ? parseInt(playingHcapInput.value) || 0 : 0;
+        }
+
+        // Calculate and set playing handicap for a player when index changes
+        function calculatePlayingHcapForPlayer(player) {
+            const hcapInput = document.getElementById('hcap' + player);
+            const handicapIndex = hcapInput ? parseFloat(hcapInput.value) || 0 : 0;
+            const playingHcap = calculatePlayingHcap(handicapIndex);
+            document.getElementById('playingHcap' + player).value = playingHcap;
+            recalculatePlayerScores(player);
+            saveData();
+        }
+
+        // Recalculate scores for a player when playing handicap changes
+        function recalculatePlayerScores(player) {
+            for (let i = 1; i <= 18; i++) {
+                if (scores[player] && scores[player][i] && scores[player][i].gross !== null) {
+                    updateScoreDisplay(player, i);
+                }
+            }
+            updateTotals();
+            saveData();
+        }
+
+        // Update score display
+        function updateScoreDisplay(player, hole) {
+            const cell = document.getElementById(`score_${player}_${hole}`);
+            const score = scores[player][hole];
+            const gross = score.gross;
+            
+            if (gross !== null && gross !== '') {
+                // Handle NS (No Score) when gross is 0
+                if (parseInt(gross) === 0) {
+                    score.stableford = 'NS';
+                    cell.innerHTML = `
+                        <div class="score-display" onclick="editScore('${player}', ${hole})">
+                            <span class="gross-display">0</span>/<strong class="pts-ns">NS</strong>
+                        </div>
+                    `;
+                } else {
+                    const par = getPar(hole);
+                    const si = getStrokeIndex(hole);
+                    const playingHcap = getPlayingHcap(player);
+                    const stableford = calculateStableford(gross, par, si, playingHcap);
+                    score.stableford = stableford;
+                    
+                    const ptsClass = `pts-${stableford}`;
+                    cell.innerHTML = `
+                        <div class="score-display" onclick="editScore('${player}', ${hole})">
+                            <span class="gross-display">${gross}</span>/<strong class="${ptsClass}">${stableford}</strong>
+                        </div>
+                    `;
+                }
+                saveData();
+            } else {
+                cell.innerHTML = `
+                    <input type="number" min="0" max="15" 
+                           onchange="updateScore('${player}', ${hole}, this.value)"
+                           onblur="if(!this.value) this.style.display='block'">
+                `;
+            }
+            
+            updateTotals();
+        }
+
+        // Edit score - show input again
+        function editScore(player, hole) {
+            const cell = document.getElementById(`score_${player}_${hole}`);
+            const currentGross = scores[player][hole].gross || '';
+            cell.innerHTML = `
+                <input type="number" value="${currentGross}" min="0" max="15" 
+                       onchange="updateScore('${player}', ${hole}, this.value)"
+                       onkeydown="handleScoreKey(event, '${player}', ${hole})"
+                       onblur="if(this.value) updateScoreDisplay('${player}', ${hole})">
+            `;
+            cell.querySelector('input').focus();
+            cell.querySelector('input').select();
+        }
+
+        // Handle keyboard navigation
+        function handleScoreKey(event, player, hole) {
+            if (event.key === 'Enter' || event.key === 'Tab') {
+                event.preventDefault();
+                const input = event.target;
+                if (input.value) {
+                    updateScore(player, hole, input.value);
+                }
+                // Move to next hole
+                if (hole < 18) {
+                    const nextCell = document.getElementById(`score_${player}_${hole + 1}`);
+                    if (nextCell) {
+                        const nextInput = nextCell.querySelector('input');
+                        if (nextInput) {
+                            nextInput.focus();
+                        } else {
+                            // Cell has score display, trigger edit
+                            editScore(player, hole + 1);
+                        }
+                    }
+                }
+            } else if (event.key === 'ArrowDown' && hole < 18) {
+                event.preventDefault();
+                const nextCell = document.getElementById(`score_${player}_${hole + 1}`);
+                if (nextCell) {
+                    const nextInput = nextCell.querySelector('input');
+                    if (nextInput) nextInput.focus();
+                    else editScore(player, hole + 1);
+                }
+            } else if (event.key === 'ArrowUp' && hole > 1) {
+                event.preventDefault();
+                const prevCell = document.getElementById(`score_${player}_${hole - 1}`);
+                if (prevCell) {
+                    const prevInput = prevCell.querySelector('input');
+                    if (prevInput) prevInput.focus();
+                    else editScore(player, hole - 1);
+                }
+            }
+        }
+
+        // Update score
+        function updateScore(player, hole, value) {
+            scores[player][hole].gross = value ? parseInt(value) : null;
+            updateScoreDisplay(player, hole);
+            
+            // Auto-advance to next hole
+            if (value && hole < 18) {
+                const nextCell = document.getElementById(`score_${player}_${hole + 1}`);
+                if (nextCell) {
+                    const nextInput = nextCell.querySelector('input');
+                    if (nextInput) {
+                        setTimeout(() => nextInput.focus(), 100);
+                    }
+                }
+            }
+        }
+
+        // Calculate all stableford (when tee selection changes)
+        function calculateAllStableford() {
+            players.forEach(p => {
+                // Recalculate playing handicap based on new tee
+                const hcapInput = document.getElementById('hcap' + p);
+                const handicapIndex = hcapInput ? parseFloat(hcapInput.value) || 0 : 0;
+                if (handicapIndex > 0) {
+                    const playingHcap = calculatePlayingHcap(handicapIndex);
+                    document.getElementById('playingHcap' + p).value = playingHcap;
+                }
+                for (let i = 1; i <= 18; i++) {
+                    if (scores[p] && scores[p][i] && scores[p][i].gross) {
+                        updateScoreDisplay(p, i);
+                    }
+                }
+            });
+            updateTotals();
+            saveData();
+        }
+
+        // Update totals
+        function updateTotals() {
+            players.forEach(p => {
+                let outGross = 0, outPts = 0;
+                let inGross = 0, inPts = 0;
+                let outCount = 0, inCount = 0;
+                
+                for (let i = 1; i <= 9; i++) {
+                    if (scores[p][i].gross) {
+                        outGross += scores[p][i].gross;
+                        outPts += scores[p][i].stableford;
+                        outCount++;
+                    }
+                }
+                for (let i = 10; i <= 18; i++) {
+                    if (scores[p][i].gross) {
+                        inGross += scores[p][i].gross;
+                        inPts += scores[p][i].stableford;
+                        inCount++;
+                    }
+                }
+                
+                document.getElementById('out' + p).innerHTML = outCount > 0 ? 
+                    `${outGross}<span class="stableford-pts pts-${outPts > 18 ? 3 : 2}">/${outPts}</span>` : '-';
+                document.getElementById('in' + p).innerHTML = inCount > 0 ? 
+                    `${inGross}<span class="stableford-pts pts-${inPts > 18 ? 3 : 2}">/${inPts}</span>` : '-';
+                document.getElementById('totalOut' + p).innerHTML = outCount > 0 ? 
+                    `${outGross}<span class="stableford-pts pts-${outPts > 18 ? 3 : 2}">/${outPts}</span>` : '-';
+                document.getElementById('total' + p).innerHTML = (outCount > 0 || inCount > 0) ? 
+                    `${outGross + inGross}<span class="stableford-pts pts-${(outPts + inPts) > 36 ? 3 : 2}">/${outPts + inPts}</span>` : '-';
+            });
+            
+            // Update main stableford total for Player A
+            let totalPts = 0;
+            for (let i = 1; i <= 18; i++) {
+                totalPts += scores['A'][i].stableford;
+            }
+            document.getElementById('stablefordTotal').textContent = totalPts;
+        }
+
+        // Update tee selection
+        function updateTeeSelection() {
+            calculateAllStableford();
+        }
+
+        // Update yardage and recalculate totals
+        function updateYardage(input, hole, teeColor) {
+            const value = parseInt(input.value) || 0;
+            
+            // Find and update the hole data
+            const allData = [...courseData.front, ...courseData.back];
+            const holeData = allData.find(h => h.hole === hole);
+            if (holeData) {
+                holeData[teeColor] = value;
+            }
+            
+            // Recalculate totals
+            calculateYardageTotals();
+            saveData();
+        }
+
+        // Update par and recalculate
+        function updatePar(input, hole) {
+            const value = parseInt(input.value) || 0;
+            
+            const allData = [...courseData.front, ...courseData.back];
+            const holeData = allData.find(h => h.hole === hole);
+            if (holeData) {
+                holeData.par = value;
+            }
+            
+            calculateYardageTotals();
+            calculateAllStableford();
+            saveData();
+        }
+
+        // Update Red par and recalculate
+        function updateParRed(input, hole) {
+            const value = parseInt(input.value) || 0;
+            
+            const allData = [...courseData.front, ...courseData.back];
+            const holeData = allData.find(h => h.hole === hole);
+            if (holeData) {
+                holeData.parRed = value;
+            }
+            
+            calculateYardageTotals();
+            calculateAllStableford();
+            saveData();
+        }
+
+        // Calculate all yardage totals
+        function calculateYardageTotals() {
+            // Front 9 totals
+            let outWhite = 0, outYellow = 0, outRed = 0, outPar = 0, outParRed = 0;
+            courseData.front.forEach(h => {
+                outWhite += h.white || 0;
+                outYellow += h.yellow || 0;
+                outRed += h.red || 0;
+                outPar += h.par || 0;
+                outParRed += h.parRed || 0;
+            });
+            
+            // Back 9 totals
+            let inWhite = 0, inYellow = 0, inRed = 0, inPar = 0, inParRed = 0;
+            courseData.back.forEach(h => {
+                inWhite += h.white || 0;
+                inYellow += h.yellow || 0;
+                inRed += h.red || 0;
+                inPar += h.par || 0;
+                inParRed += h.parRed || 0;
+            });
+            
+            // Update OUT row
+            document.getElementById('outWhite').textContent = outWhite;
+            document.getElementById('outYellow').textContent = outYellow;
+            document.getElementById('outRed').textContent = outRed;
+            document.getElementById('outPar').textContent = outPar;
+            document.getElementById('outParRed').textContent = outParRed;
+            
+            // Update IN row
+            document.getElementById('inWhite').textContent = inWhite;
+            document.getElementById('inYellow').textContent = inYellow;
+            document.getElementById('inRed').textContent = inRed;
+            document.getElementById('inPar').textContent = inPar;
+            document.getElementById('inParRed').textContent = inParRed;
+            
+            // Update second OUT row (before total)
+            document.getElementById('totalWhiteOut').textContent = outWhite;
+            document.getElementById('totalYellowOut').textContent = outYellow;
+            document.getElementById('totalRedOut').textContent = outRed;
+            document.getElementById('totalParOut').textContent = outPar;
+            document.getElementById('totalParRedOut').textContent = outParRed;
+            
+            // Update TOTAL row
+            document.getElementById('totalWhite').textContent = outWhite + inWhite;
+            document.getElementById('totalYellow').textContent = outYellow + inYellow;
+            document.getElementById('totalRed').textContent = outRed + inRed;
+            document.getElementById('totalPar').textContent = outPar + inPar;
+            document.getElementById('totalParRed').textContent = outParRed + inParRed;
+        }
+
+        // Generate hole row HTML
+        function generateHoleRow(holeData) {
+            const isRed = document.getElementById('teeRed')?.checked || false;
+            return `
+                <tr>
+                    <td class="hole-num">${holeData.hole}</td>
+                    <td class="yards-white"><input type="number" value="${holeData.white}" style="width:40px;text-align:center;border:none;" onchange="updateYardage(this, ${holeData.hole}, 'white')"></td>
+                    <td class="yards-yellow"><input type="number" value="${holeData.yellow}" style="width:40px;text-align:center;border:none;background:transparent;font-weight:bold;" onchange="updateYardage(this, ${holeData.hole}, 'yellow')"></td>
+                    <td class="par-col"><input type="number" value="${holeData.par}" style="width:25px;text-align:center;border:none;font-weight:bold;" onchange="updatePar(this, ${holeData.hole})"></td>
+                    <td class="si-col">${holeData.si}</td>
+                    <td class="player-score" id="score_A_${holeData.hole}">
+                        <input type="number" min="0" max="15" onchange="updateScore('A', ${holeData.hole}, this.value)" onkeydown="handleScoreKey(event, 'A', ${holeData.hole})">
+                    </td>
+                    <td class="player-score" id="score_B_${holeData.hole}">
+                        <input type="number" min="0" max="15" onchange="updateScore('B', ${holeData.hole}, this.value)" onkeydown="handleScoreKey(event, 'B', ${holeData.hole})">
+                    </td>
+                    <td class="player-score" id="score_C_${holeData.hole}">
+                        <input type="number" min="0" max="15" onchange="updateScore('C', ${holeData.hole}, this.value)" onkeydown="handleScoreKey(event, 'C', ${holeData.hole})">
+                    </td>
+                    <td class="player-score" id="score_D_${holeData.hole}">
+                        <input type="number" min="0" max="15" onchange="updateScore('D', ${holeData.hole}, this.value)" onkeydown="handleScoreKey(event, 'D', ${holeData.hole})">
+                    </td>
+                    <td class="wlh-col"></td>
+                    <td class="yards-red"><input type="number" value="${holeData.red}" style="width:40px;text-align:center;border:none;color:#cc0000;font-weight:bold;background:transparent;" onchange="updateYardage(this, ${holeData.hole}, 'red')"></td>
+                    <td class="par-red"><input type="number" value="${holeData.parRed}" style="width:25px;text-align:center;border:none;color:#cc0000;font-weight:bold;background:transparent;" onchange="updateParRed(this, ${holeData.hole})"></td>
+                    <td class="si-red">${holeData.siRed}</td>
+                </tr>
+            `;
+        }
+
+        // Initialize the scorecard
+        function initScorecard() {
+            const frontNine = document.getElementById('frontNine');
+            const backNine = document.getElementById('backNine');
+            
+            frontNine.innerHTML = courseData.front.map(h => generateHoleRow(h)).join('');
+            backNine.innerHTML = courseData.back.map(h => generateHoleRow(h)).join('');
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            const data = {
+                competition: document.getElementById('competition')?.value || '',
+                date: document.getElementById('date')?.value || '',
+                startTime: document.getElementById('startTime')?.value || '',
+                finishTime: document.getElementById('finishTime')?.value || '',
+                tee: getSelectedTee(),
+                players: {},
+                scores: scores
+            };
+            players.forEach(p => {
+                data.players[p] = {
+                    name: document.getElementById('player' + p)?.value || '',
+                    hcap: document.getElementById('hcap' + p)?.value || '',
+                    playingHcap: document.getElementById('playingHcap' + p)?.value || 0
+                };
+            });
+            localStorage.setItem('golfScorecard', JSON.stringify(data));
+            
+            // Show save indicator
+            const indicator = document.getElementById('saveIndicator');
+            indicator.classList.add('show');
+            setTimeout(() => indicator.classList.remove('show'), 1500);
+        }
+
+        // Load data from localStorage
+        function loadData() {
+            const saved = localStorage.getItem('golfScorecard');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    
+                    // Restore form fields
+                    if (data.competition) document.getElementById('competition').value = data.competition;
+                    if (data.date) document.getElementById('date').value = data.date;
+                    if (data.startTime) document.getElementById('startTime').value = data.startTime;
+                    if (data.finishTime) document.getElementById('finishTime').value = data.finishTime;
+                    
+                    // Restore tee selection
+                    if (data.tee) {
+                        document.getElementById('teeWhite').checked = data.tee === 'white';
+                        document.getElementById('teeYellow').checked = data.tee === 'yellow';
+                        document.getElementById('teeRed').checked = data.tee === 'red';
+                    }
+                    
+                // Restore player info
+                if (data.players) {
+                    players.forEach(p => {
+                        if (data.players[p]) {
+                            document.getElementById('player' + p).value = data.players[p].name || '';
+                            document.getElementById('hcap' + p).value = data.players[p].hcap || '';
+                            document.getElementById('playingHcap' + p).value = data.players[p].playingHcap || 0;
+                        }
+                    });
+                }
+                    
+                    // Restore scores
+                    if (data.scores) {
+                        scores = data.scores;
+                        players.forEach(p => {
+                            for (let i = 1; i <= 18; i++) {
+                                if (scores[p] && scores[p][i] && scores[p][i].gross !== null) {
+                                    updateScoreDisplay(p, i);
+                                }
+                            }
+                        });
+                    }
+                    
+                    calculateAllStableford();
+                    console.log('Data loaded successfully');
+                } catch(e) {
+                    console.error('Error loading data:', e);
+                    initScores();
+                }
+            } else {
+                initScores();
+            }
+        }
+
+        // Add change listeners to save data
+        function addSaveListeners() {
+            const fields = ['competition', 'date', 'startTime', 'finishTime', 'playerA', 'playerB', 'playerC', 'playerD', 'hcapA', 'hcapB', 'hcapC', 'hcapD', 'playingHcapA', 'playingHcapB', 'playingHcapC', 'playingHcapD'];
+            fields.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('change', saveData);
+                    el.addEventListener('input', saveData);
+                }
+            });
+            document.querySelectorAll('input[name="tee"]').forEach(el => {
+                el.addEventListener('change', saveData);
+            });
+        }
+
+        // Clear all data
+        function clearAllData() {
+            if (confirm('Clear ALL data including player names and handicaps?')) {
+                localStorage.removeItem('golfScorecard');
+                location.reload();
+            }
+        }
+
+        // New round - keep player info, clear scores
+        function newRound() {
+            if (confirm('Start new round? This will clear all scores but keep player details.')) {
+                // Reset scores only
+                initScores();
+                players.forEach(p => {
+                    for (let i = 1; i <= 18; i++) {
+                        const cell = document.getElementById(`score_${p}_${i}`);
+                        if (cell) {
+                            cell.innerHTML = `<input type="number" min="0" max="15" onchange="updateScore('${p}', ${i}, this.value)">`;
+                        }
+                    }
+                });
+                // Clear competition and times, keep player info
+                document.getElementById('competition').value = '';
+                document.getElementById('date').value = '';
+                document.getElementById('startTime').value = '';
+                document.getElementById('finishTime').value = '';
+                updateTotals();
+                saveData();
+            }
+        }
+
+        // Share to WhatsApp
+        async function shareToWhatsApp() {
+            const container = document.querySelector('.main-container');
+            const btnContainer = document.querySelector('.btn-container');
+            btnContainer.style.display = 'none';
+            
+            try {
+                const canvas = await html2canvas(container, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#ffffff'
+                });
+                
+                btnContainer.style.display = 'block';
+                
+                // Convert canvas to blob
+                const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                const file = new File([blob], 'golf-scorecard.png', { type: 'image/png' });
+                
+                const competitionName = document.getElementById('competition')?.value || 'Golf Round';
+                const shareData = {
+                    title: 'Golf Scorecard',
+                    text: `Golf Scorecard - ${competitionName}`,
+                    files: [file]
+                };
+                
+                // Check if Web Share API with files is supported
+                if (navigator.canShare && navigator.canShare(shareData)) {
+                    await navigator.share(shareData);
+                } else {
+                    // Fallback: download and open WhatsApp
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'golf-scorecard.png';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                    
+                    setTimeout(() => {
+                        window.open('https://wa.me/?text=' + encodeURIComponent(`Golf Scorecard - ${competitionName}`), '_blank');
+                        alert('Image downloaded! Please attach it manually in WhatsApp.');
+                    }, 500);
+                }
+            } catch (err) {
+                btnContainer.style.display = 'block';
+                console.error('Share failed:', err);
+                if (err.name !== 'AbortError') {
+                    alert('Sharing failed. Please try again.');
+                }
+            }
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            initScorecard();
+            loadData();
+            addSaveListeners();
+        };
+    </script>
+</body>
+</html>
