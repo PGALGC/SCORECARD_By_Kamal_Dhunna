@@ -443,53 +443,57 @@
     <div class="main-container">
         <div class="top-section">
             <div class="competition-box">
-                <table>
+                <table style="width:100%;">
+                    <colgroup>
+                        <col style="width:150px;">
+                        <col style="width:auto;">
+                        <col style="width:80px;">
+                        <col style="width:80px;">
+                    </colgroup>
                     <tr>
                         <td style="font-weight:bold;">COMPETITION</td>
                         <td colspan="3"><input type="text" id="competition" placeholder="Competition Name" style="width:100%;"></td>
                     </tr>
                     <tr>
                         <td>DATE</td>
-                        <td><input type="date" id="date"></td>
+                        <td><input type="date" id="date" style="width:100%;"></td>
                         <td>START</td>
-                        <td><input type="time" id="startTime"></td>
+                        <td><input type="time" id="startTime" style="width:100%;"></td>
                     </tr>
                     <tr>
                         <td>FINISH</td>
-                        <td><input type="time" id="finishTime"></td>
+                        <td><input type="time" id="finishTime" style="width:100%;"></td>
                         <td colspan="2"></td>
                     </tr>
-                </table>
-                <table style="margin-top:5px;">
                     <tr style="background:#f0f0f0;">
-                        <th style="width:80px;">Player</th>
-                        <th style="width:120px;">Name</th>
-                        <th style="width:60px;">H'Cap<br>Index</th>
-                        <th style="width:60px;">Playing<br>H'Cap</th>
+                        <th>Player</th>
+                        <th>Name</th>
+                        <th>H'Cap<br>Index</th>
+                        <th>Playing<br>H'Cap</th>
                     </tr>
                     <tr>
-                        <td>Player A</td>
-                        <td><input type="text" id="playerA" placeholder="Name" style="width:100%;"></td>
-                        <td><input type="number" id="hcapA" class="handicap-input" style="width:50px;" placeholder="0" onchange="calculatePlayingHcapForPlayer('A')"></td>
-                        <td><input type="number" id="playingHcapA" style="width:50px;text-align:center;" value="0" onchange="recalculatePlayerScores('A')"></td>
+                        <td>Player A - <input type="text" id="playerA" placeholder="Name" style="width:80px;border:none;background:transparent;"></td>
+                        <td></td>
+                        <td><input type="number" id="hcapA" class="handicap-input" style="width:100%;text-align:center;" placeholder="0" onchange="calculatePlayingHcapForPlayer('A')"></td>
+                        <td><input type="number" id="playingHcapA" style="width:100%;text-align:center;" value="0" onchange="recalculatePlayerScores('A')"></td>
                     </tr>
                     <tr>
-                        <td>Player B</td>
-                        <td><input type="text" id="playerB" placeholder="Name" style="width:100%;"></td>
-                        <td><input type="number" id="hcapB" class="handicap-input" style="width:50px;" placeholder="0" onchange="calculatePlayingHcapForPlayer('B')"></td>
-                        <td><input type="number" id="playingHcapB" style="width:50px;text-align:center;" value="0" onchange="recalculatePlayerScores('B')"></td>
+                        <td>Player B - <input type="text" id="playerB" placeholder="Name" style="width:80px;border:none;background:transparent;"></td>
+                        <td></td>
+                        <td><input type="number" id="hcapB" class="handicap-input" style="width:100%;text-align:center;" placeholder="0" onchange="calculatePlayingHcapForPlayer('B')"></td>
+                        <td><input type="number" id="playingHcapB" style="width:100%;text-align:center;" value="0" onchange="recalculatePlayerScores('B')"></td>
                     </tr>
                     <tr>
-                        <td>Player C</td>
-                        <td><input type="text" id="playerC" placeholder="Name" style="width:100%;"></td>
-                        <td><input type="number" id="hcapC" class="handicap-input" style="width:50px;" placeholder="0" onchange="calculatePlayingHcapForPlayer('C')"></td>
-                        <td><input type="number" id="playingHcapC" style="width:50px;text-align:center;" value="0" onchange="recalculatePlayerScores('C')"></td>
+                        <td>Player C - <input type="text" id="playerC" placeholder="Name" style="width:80px;border:none;background:transparent;"></td>
+                        <td></td>
+                        <td><input type="number" id="hcapC" class="handicap-input" style="width:100%;text-align:center;" placeholder="0" onchange="calculatePlayingHcapForPlayer('C')"></td>
+                        <td><input type="number" id="playingHcapC" style="width:100%;text-align:center;" value="0" onchange="recalculatePlayerScores('C')"></td>
                     </tr>
                     <tr>
-                        <td>Player D</td>
-                        <td><input type="text" id="playerD" placeholder="Name" style="width:100%;"></td>
-                        <td><input type="number" id="hcapD" class="handicap-input" style="width:50px;" placeholder="0" onchange="calculatePlayingHcapForPlayer('D')"></td>
-                        <td><input type="number" id="playingHcapD" style="width:50px;text-align:center;" value="0" onchange="recalculatePlayerScores('D')"></td>
+                        <td>Player D - <input type="text" id="playerD" placeholder="Name" style="width:80px;border:none;background:transparent;"></td>
+                        <td></td>
+                        <td><input type="number" id="hcapD" class="handicap-input" style="width:100%;text-align:center;" placeholder="0" onchange="calculatePlayingHcapForPlayer('D')"></td>
+                        <td><input type="number" id="playingHcapD" style="width:100%;text-align:center;" value="0" onchange="recalculatePlayerScores('D')"></td>
                     </tr>
                 </table>
             </div>
