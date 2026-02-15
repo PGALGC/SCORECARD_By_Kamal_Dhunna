@@ -342,15 +342,21 @@
             width: 40px;
         }
         .yards-red {
-            background: #ffcccc !important; /* darker red for better contrast */
-            color: #cc0000;
+            background: #c40000 !important; /* deep red like reference image */
+            color: #ffffff; /* white text for contrast */
             width: 45px;
             font-weight: bold;
         }
         .yards-red input {
-            color: #cc0000;
-            -webkit-text-fill-color: #cc0000; /* iOS Safari */
+            color: #ffffff;
+            -webkit-text-fill-color: #ffffff; /* iOS Safari ensures white text */
+            background: transparent;
             font-weight: bold;
+            caret-color: #ffffff;
+        }
+        .yards-red input::placeholder {
+            color: #ffe5e5;
+            opacity: 0.85;
         }
         .par-red {
             color: #cc0000;
