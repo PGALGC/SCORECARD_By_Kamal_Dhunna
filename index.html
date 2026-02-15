@@ -878,40 +878,65 @@
 
         // Handle keyboard navigation
         function handleScoreKey(event, player, hole) {
+            const playerOrder = ['A', 'B', 'C', 'D'];
+            const currentIndex = playerOrder.indexOf(player);
+            
             if (event.key === 'Enter' || event.key === 'Tab') {
                 event.preventDefault();
                 const input = event.target;
                 if (input.value) {
                     updateScore(player, hole, input.value);
                 }
-                // Move to next hole
-                if (hole < 18) {
-                    const nextCell = document.getElementById(`score_${player}_${hole + 1}`);
-                    if (nextCell) {
-                        const nextInput = nextCell.querySelector('input');
-                        if (nextInput) {
-                            nextInput.focus();
-                        } else {
-                            // Cell has score display, trigger edit
-                            editScore(player, hole + 1);
-                        }
-                    }
-                }
+                // Move to next player (right), or next hole if at Player D
+                moveToNextCell(player, hole, 'right');
+            } else if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                moveToNextCell(player, hole, 'right');
+            } else if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                moveToNextCell(player, hole, 'left');
             } else if (event.key === 'ArrowDown' && hole < 18) {
                 event.preventDefault();
-                const nextCell = document.getElementById(`score_${player}_${hole + 1}`);
-                if (nextCell) {
-                    const nextInput = nextCell.querySelector('input');
-                    if (nextInput) nextInput.focus();
-                    else editScore(player, hole + 1);
-                }
+                focusCell(player, hole + 1);
             } else if (event.key === 'ArrowUp' && hole > 1) {
                 event.preventDefault();
-                const prevCell = document.getElementById(`score_${player}_${hole - 1}`);
-                if (prevCell) {
-                    const prevInput = prevCell.querySelector('input');
-                    if (prevInput) prevInput.focus();
-                    else editScore(player, hole - 1);
+                focusCell(player, hole - 1);
+            }
+        }
+
+        // Move to next/previous cell
+        function moveToNextCell(player, hole, direction) {
+            const playerOrder = ['A', 'B', 'C', 'D'];
+            const currentIndex = playerOrder.indexOf(player);
+            
+            if (direction === 'right') {
+                if (currentIndex < 3) {
+                    // Move to next player same hole
+                    focusCell(playerOrder[currentIndex + 1], hole);
+                } else if (hole < 18) {
+                    // At Player D, move to Player A next hole
+                    focusCell('A', hole + 1);
+                }
+            } else if (direction === 'left') {
+                if (currentIndex > 0) {
+                    // Move to previous player same hole
+                    focusCell(playerOrder[currentIndex - 1], hole);
+                } else if (hole > 1) {
+                    // At Player A, move to Player D previous hole
+                    focusCell('D', hole - 1);
+                }
+            }
+        }
+
+        // Focus a specific cell
+        function focusCell(player, hole) {
+            const cell = document.getElementById(`score_${player}_${hole}`);
+            if (cell) {
+                const input = cell.querySelector('input');
+                if (input) {
+                    input.focus();
+                } else {
+                    editScore(player, hole);
                 }
             }
         }
@@ -921,15 +946,9 @@
             scores[player][hole].gross = value ? parseInt(value) : null;
             updateScoreDisplay(player, hole);
             
-            // Auto-advance to next hole
-            if (value && hole < 18) {
-                const nextCell = document.getElementById(`score_${player}_${hole + 1}`);
-                if (nextCell) {
-                    const nextInput = nextCell.querySelector('input');
-                    if (nextInput) {
-                        setTimeout(() => nextInput.focus(), 100);
-                    }
-                }
+            // Auto-advance to next player (right)
+            if (value) {
+                setTimeout(() => moveToNextCell(player, hole, 'right'), 100);
             }
         }
 
