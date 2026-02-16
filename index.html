@@ -1618,6 +1618,10 @@
             
             // Hide buttons during capture
             btnContainer.style.display = 'none';
+            // Hide signature controls during capture
+            const sigActions = document.querySelectorAll('.sig-actions');
+            const prevSigDisplays = Array.from(sigActions).map(el => el.style.display);
+            sigActions.forEach(el => el.style.display = 'none');
             
             // Store original styles
             const originalStyles = {
@@ -1682,6 +1686,8 @@
                 document.body.style.overflow = originalStyles.bodyOverflow;
                 document.getElementById('capture-style')?.remove();
                 btnContainer.style.display = 'flex';
+                // Restore signature controls
+                sigActions.forEach((el, i) => el.style.display = prevSigDisplays[i] || 'flex');
                 
                 const competitionName = document.getElementById('competition')?.value || 'Golf Round';
                 const dataURL = canvas.toDataURL('image/png');
@@ -1730,6 +1736,9 @@
                 document.body.style.overflow = originalStyles.bodyOverflow;
                 document.getElementById('capture-style')?.remove();
                 btnContainer.style.display = 'flex';
+                // Restore signature controls
+                const sigActionsErr = document.querySelectorAll('.sig-actions');
+                sigActionsErr.forEach((el, i) => el.style.display = prevSigDisplays?.[i] || 'flex');
                 
                 console.error('Share failed:', err);
                 alert('Sharing failed: ' + err.message);
