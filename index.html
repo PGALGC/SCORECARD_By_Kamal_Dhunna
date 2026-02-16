@@ -419,12 +419,60 @@
             margin-top: 15px;
             display: flex;
             justify-content: space-between;
+            gap: 20px;
         }
         .signature-line {
-            border-bottom: 1px dotted #333;
-            width: 45%;
-            padding: 5px;
+            display: none; /* replaced by interactive signature pads */
+        }
+        .signature-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+        }
+        .sig-header {
             font-size: 12px;
+            color: #333;
+        }
+        .sig-canvas {
+            width: 100%;
+            height: 90px;
+            background: #fff;
+            border-bottom: 1px dotted #333;
+            touch-action: none; /* important for iOS/Android drawing */
+            border-radius: 2px 2px 0 0;
+        }
+        .sig-typed {
+            width: 100%;
+            border: none;
+            border-bottom: 1px dotted #333;
+            padding: 6px 4px;
+            font-size: 14px;
+            display: none; /* toggled on demand */
+            background: transparent;
+        }
+        .sig-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .sig-btn {
+            color: white;
+            background: #007bff;
+            border: none;
+            padding: 6px 10px;
+            font-size: 11px;
+            border-radius: 4px;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+        .sig-btn.clear {
+            background: #6c757d;
+        }
+        @media (max-width: 767px) {
+            .sig-canvas { height: 110px; }
+            .signature-section { gap: 10px; }
         }
         .editable {
             background: #ffffd0;
@@ -693,8 +741,24 @@
         </div>
 
         <div class="signature-section">
-            <div class="signature-line">Marker's Signature</div>
-            <div class="signature-line">Player's Signature</div>
+            <div class="signature-box">
+                <div class="sig-header">Marker's Signature</div>
+                <canvas id="sigMarker" class="sig-canvas"></canvas>
+                <input type="text" id="sigMarkerTyped" class="sig-typed" placeholder="Type name instead (optional)">
+                <div class="sig-actions">
+                    <button class="sig-btn" type="button" onclick="toggleSigMode('Marker')">✍️ Draw / Type</button>
+                    <button class="sig-btn clear" type="button" onclick="clearSignature('Marker')">Clear</button>
+                </div>
+            </div>
+            <div class="signature-box">
+                <div class="sig-header">Player's Signature</div>
+                <canvas id="sigPlayer" class="sig-canvas"></canvas>
+                <input type="text" id="sigPlayerTyped" class="sig-typed" placeholder="Type name instead (optional)">
+                <div class="sig-actions">
+                    <button class="sig-btn" type="button" onclick="toggleSigMode('Player')">✍️ Draw / Type</button>
+                    <button class="sig-btn clear" type="button" onclick="clearSignature('Player')">Clear</button>
+                </div>
+            </div>
         </div>
 
         <div class="btn-container">
@@ -741,6 +805,12 @@
 
         const players = ['A', 'B', 'C', 'D'];
         let scores = {};
+
+        // Signature pads state
+        const signaturePads = {
+            Marker: { canvasId: 'sigMarker', typedId: 'sigMarkerTyped', mode: 'draw', drawing: false, ctx: null },
+            Player: { canvasId: 'sigPlayer', typedId: 'sigPlayerTyped', mode: 'draw', drawing: false, ctx: null }
+        };
 
         // Initialize scores object
         function initScores() {
@@ -1220,7 +1290,8 @@
                 finishTime: document.getElementById('finishTime')?.value || '',
                 tee: getSelectedTee(),
                 players: {},
-                scores: scores
+                scores: scores,
+                signatures: getSignatureState()
             };
             players.forEach(p => {
                 data.players[p] = {
@@ -1278,6 +1349,11 @@
                                 }
                             }
                         });
+                    }
+
+                    // Restore signatures
+                    if (data.signatures) {
+                        restoreSignatureState(data.signatures);
                     }
                     
                     calculateAllStableford();
@@ -1355,6 +1431,182 @@
                 u8arr[n] = bstr.charCodeAt(n);
             }
             return new Blob([u8arr], { type: mime });
+        }
+
+        // Signature utilities
+        function initSignaturePads() {
+            ['Marker', 'Player'].forEach(key => initSignaturePad(key));
+            window.addEventListener('resize', () => {
+                resizeSignaturePad('Marker');
+                resizeSignaturePad('Player');
+            });
+        }
+
+        function initSignaturePad(key) {
+            const pad = signaturePads[key];
+            const canvas = document.getElementById(pad.canvasId);
+            const typed = document.getElementById(pad.typedId);
+            // Ensure mode default
+            pad.mode = (localStorage.getItem('sigMode_' + key) || 'draw');
+            setSigModeUI(key, pad.mode);
+            // Size and context
+            configureCanvasForDPR(canvas, 90);
+            pad.ctx = canvas.getContext('2d');
+            // Drawing style
+            pad.ctx.lineWidth = 2;
+            pad.ctx.lineCap = 'round';
+            pad.ctx.strokeStyle = '#000';
+
+            const getPos = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX ?? (e.touches?.[0]?.clientX || 0)) - rect.left;
+                const y = (e.clientY ?? (e.touches?.[0]?.clientY || 0)) - rect.top;
+                return { x, y };
+            };
+
+            const onDown = (e) => {
+                e.preventDefault();
+                if (pad.mode !== 'draw') return;
+                pad.drawing = true;
+                canvas.setPointerCapture?.(e.pointerId || 0);
+                const { x, y } = getPos(e);
+                pad.ctx.beginPath();
+                pad.ctx.moveTo(x, y);
+            };
+            const onMove = (e) => {
+                if (!pad.drawing) return;
+                e.preventDefault();
+                const { x, y } = getPos(e);
+                pad.ctx.lineTo(x, y);
+                pad.ctx.stroke();
+            };
+            const onUp = (e) => {
+                if (!pad.drawing) return;
+                e.preventDefault();
+                pad.drawing = false;
+                saveSignatureState();
+            };
+
+            // Pointer events (with fallbacks)
+            if (window.PointerEvent) {
+                canvas.addEventListener('pointerdown', onDown, { passive: false });
+                canvas.addEventListener('pointermove', onMove, { passive: false });
+                canvas.addEventListener('pointerup', onUp, { passive: false });
+                canvas.addEventListener('pointerleave', onUp, { passive: false });
+            } else {
+                canvas.addEventListener('mousedown', onDown, { passive: false });
+                canvas.addEventListener('mousemove', onMove, { passive: false });
+                canvas.addEventListener('mouseup', onUp, { passive: false });
+                canvas.addEventListener('touchstart', onDown, { passive: false });
+                canvas.addEventListener('touchmove', onMove, { passive: false });
+                canvas.addEventListener('touchend', onUp, { passive: false });
+            }
+
+            // Save when typing
+            typed.addEventListener('input', saveSignatureState);
+        }
+
+        function configureCanvasForDPR(canvas, cssHeightPx) {
+            const ratio = Math.max(window.devicePixelRatio || 1, 1);
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = Math.max(300, Math.floor(rect.width * ratio));
+            canvas.height = Math.floor(cssHeightPx * ratio);
+            canvas.style.height = cssHeightPx + 'px';
+            const ctx = canvas.getContext('2d');
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+        }
+
+        function resizeSignaturePad(key) {
+            const pad = signaturePads[key];
+            const canvas = document.getElementById(pad.canvasId);
+            // Preserve existing drawing
+            const dataUrl = canvas.toDataURL('image/png');
+            configureCanvasForDPR(canvas, parseInt(canvas.style.height) || 90);
+            const img = new Image();
+            img.onload = () => {
+                pad.ctx.clearRect(0, 0, canvas.width, canvas.height);
+                pad.ctx.drawImage(img, 0, 0, canvas.width / (window.devicePixelRatio || 1), canvas.height / (window.devicePixelRatio || 1));
+            };
+            img.src = dataUrl;
+        }
+
+        function setSigModeUI(key, mode) {
+            const pad = signaturePads[key];
+            const canvas = document.getElementById(pad.canvasId);
+            const typed = document.getElementById(pad.typedId);
+            if (mode === 'draw') {
+                canvas.style.display = 'block';
+                typed.style.display = 'none';
+            } else {
+                canvas.style.display = 'none';
+                typed.style.display = 'block';
+            }
+            pad.mode = mode;
+            localStorage.setItem('sigMode_' + key, mode);
+        }
+
+        function toggleSigMode(key) {
+            const pad = signaturePads[key];
+            setSigModeUI(key, pad.mode === 'draw' ? 'type' : 'draw');
+            saveSignatureState();
+        }
+
+        function clearSignature(key) {
+            const pad = signaturePads[key];
+            const canvas = document.getElementById(pad.canvasId);
+            pad.ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById(pad.typedId).value = '';
+            saveSignatureState();
+        }
+
+        function getSignatureState() {
+            const state = {};
+            ['Marker', 'Player'].forEach(key => {
+                const pad = signaturePads[key];
+                const canvas = document.getElementById(pad.canvasId);
+                state[key] = {
+                    mode: pad.mode,
+                    typed: document.getElementById(pad.typedId).value || '',
+                    image: canvas.toDataURL('image/png')
+                };
+            });
+            return state;
+        }
+
+        function restoreSignatureState(state) {
+            ['Marker', 'Player'].forEach(key => {
+                const padState = state[key];
+                if (!padState) return;
+                setSigModeUI(key, padState.mode || 'draw');
+                const typed = document.getElementById(signaturePads[key].typedId);
+                typed.value = padState.typed || '';
+                const canvas = document.getElementById(signaturePads[key].canvasId);
+                if (padState.image) {
+                    const img = new Image();
+                    img.onload = () => {
+                        const ctx = canvas.getContext('2d');
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0, canvas.width / (window.devicePixelRatio || 1), canvas.height / (window.devicePixelRatio || 1));
+                    };
+                    img.src = padState.image;
+                }
+            });
+        }
+
+        function saveSignatureState() {
+            // Merge into existing saved data to avoid clobbering
+            try {
+                const saved = localStorage.getItem('golfScorecard');
+                const data = saved ? JSON.parse(saved) : {};
+                data.signatures = getSignatureState();
+                localStorage.setItem('golfScorecard', JSON.stringify(data));
+            } catch (e) {
+                console.warn('Could not save signatures', e);
+            }
+            // Brief save indicator reuse
+            const indicator = document.getElementById('saveIndicator');
+            indicator.classList.add('show');
+            setTimeout(() => indicator.classList.remove('show'), 800);
         }
 
         // Share to WhatsApp
@@ -1487,6 +1739,7 @@
         // Initialize on page load
         window.onload = function() {
             initScorecard();
+            initSignaturePads();
             loadData();
             addSaveListeners();
         };
