@@ -385,6 +385,7 @@
             background: #cc0000 !important;
             color: white !important;
             padding: 5px !important;
+	    text-align: center !important;
         }
         .bottom-section {
             display: flex;
@@ -545,25 +546,25 @@
                     </tr>
                     <tr>
                         <td>Player A</td>
-                        <td><input type="text" id="playerA" placeholder="Name" style="width:100%;" oninput="updatePlayerHeader('A')"></td>
+                        <td><input type="text" id="playerA" placeholder="Name" style="width:100%;" oninput="updatePlayerHeader('A'); updateDividerPlayerNames();"></td>
                         <td><input type="number" id="hcapA" class="handicap-input" style="width:100%;text-align:center;" placeholder="0" onchange="calculatePlayingHcapForPlayer('A')"></td>
                         <td><input type="number" id="playingHcapA" style="width:100%;text-align:center;" value="0" onchange="recalculatePlayerScores('A')"></td>
                     </tr>
                     <tr>
                         <td>Player B</td>
-                        <td><input type="text" id="playerB" placeholder="Name" style="width:100%;" oninput="updatePlayerHeader('B')"></td>
+                        <td><input type="text" id="playerB" placeholder="Name" style="width:100%;" oninput="updatePlayerHeader('B'); updateDividerPlayerNames();"></td>
                         <td><input type="number" id="hcapB" class="handicap-input" style="width:100%;text-align:center;" placeholder="0" onchange="calculatePlayingHcapForPlayer('B')"></td>
                         <td><input type="number" id="playingHcapB" style="width:100%;text-align:center;" value="0" onchange="recalculatePlayerScores('B')"></td>
                     </tr>
                     <tr>
                         <td>Player C</td>
-                        <td><input type="text" id="playerC" placeholder="Name" style="width:100%;" oninput="updatePlayerHeader('C')"></td>
+                        <td><input type="text" id="playerC" placeholder="Name" style="width:100%;" oninput="updatePlayerHeader('C'); updateDividerPlayerNames();"></td>
                         <td><input type="number" id="hcapC" class="handicap-input" style="width:100%;text-align:center;" placeholder="0" onchange="calculatePlayingHcapForPlayer('C')"></td>
                         <td><input type="number" id="playingHcapC" style="width:100%;text-align:center;" value="0" onchange="recalculatePlayerScores('C')"></td>
                     </tr>
                     <tr>
                         <td>Player D</td>
-                        <td><input type="text" id="playerD" placeholder="Name" style="width:100%;" oninput="updatePlayerHeader('D')"></td>
+                        <td><input type="text" id="playerD" placeholder="Name" style="width:100%;" oninput="updatePlayerHeader('D'); updateDividerPlayerNames();"></td>
                         <td><input type="number" id="hcapD" class="handicap-input" style="width:100%;text-align:center;" placeholder="0" onchange="calculatePlayingHcapForPlayer('D')"></td>
                         <td><input type="number" id="playingHcapD" style="width:100%;text-align:center;" value="0" onchange="recalculatePlayerScores('D')"></td>
                     </tr>
@@ -642,9 +643,16 @@
                 </tr>
             </tbody>
             <tbody>
-                <tr class="divider-row">
-                    <td colspan="13">GENERIC SOCIETY GOLF SCORECARD</td>
-                </tr>
+               <tbody>
+    	<tr class="divider-row">
+        <td colspan="5"></td>
+        <td id="dividerPlayerA">Player A</td>
+        <td id="dividerPlayerB">Player B</td>
+        <td id="dividerPlayerC">Player C</td>
+        <td id="dividerPlayerD">Player D</td>
+        <td colspan="4"></td>
+    	</tr>
+	</tbody>
             </tbody>
             <tbody id="backNine">
                 <!-- Back 9 will be populated by JS -->
@@ -1123,13 +1131,31 @@
                 const name = nameInput.value.trim();
                 header.textContent = name || 'Player ' + player;
             }
-            saveData();
+            updateDividerPlayerNames();  // ADD THIS LINE
+    	    saveData();
         }
 
         // Update all player headers (called on load)
         function updateAllPlayerHeaders() {
-            ['A', 'B', 'C', 'D'].forEach(p => updatePlayerHeader(p));
-        }
+    	['A', 'B', 'C', 'D'].forEach(p => updatePlayerHeader(p));
+    	updateDividerPlayerNames();
+	}
+	function updateDividerPlayerNames() {
+    var cellA = document.getElementById('dividerPlayerA');
+    var cellB = document.getElementById('dividerPlayerB');
+    var cellC = document.getElementById('dividerPlayerC');
+    var cellD = document.getElementById('dividerPlayerD');
+    
+    var headerA = document.getElementById('headerA');
+    var headerB = document.getElementById('headerB');
+    var headerC = document.getElementById('headerC');
+    var headerD = document.getElementById('headerD');
+    
+    if (cellA && headerA) cellA.textContent = headerA.textContent;
+    if (cellB && headerB) cellB.textContent = headerB.textContent;
+    if (cellC && headerC) cellC.textContent = headerC.textContent;
+    if (cellD && headerD) cellD.textContent = headerD.textContent;
+}
 
         // Update yardage and recalculate totals
         function updateYardage(input, hole, teeColor) {
@@ -1747,11 +1773,12 @@
 
         // Initialize on page load
         window.onload = function() {
-            initScorecard();
-            initSignaturePads();
-            loadData();
-            addSaveListeners();
-        };
+    	initScorecard();
+    	initSignaturePads();
+    	loadData();
+    	addSaveListeners();
+    	updateDividerPlayerNames();
+	};
     </script>
 </body>
 </html>
