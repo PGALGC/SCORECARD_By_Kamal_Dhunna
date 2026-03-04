@@ -227,7 +227,6 @@
             padding: 8px 2px;
             min-height: 44px;
         }
-        /* Mobile-friendly touch targets */
         @media (max-width: 767px) {
             .scorecard-table th, .scorecard-table td {
                 padding: 6px 3px;
@@ -240,7 +239,6 @@
                 display: table-cell;
             }
         }
-        /* Hide number input spinners */
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {
             -webkit-appearance: none;
@@ -282,24 +280,12 @@
             height: 36px;
             touch-action: manipulation;
         }
-        .whatsapp-btn {
-            background: #25D366;
-        }
-        .whatsapp-btn:hover, .whatsapp-btn:active {
-            background: #128C7E;
-        }
-        .new-round-btn {
-            background: #007bff;
-        }
-        .new-round-btn:hover, .new-round-btn:active {
-            background: #0056b3;
-        }
-        .clear-btn {
-            background: #dc3545;
-        }
-        .clear-btn:hover, .clear-btn:active {
-            background: #c82333;
-        }
+        .whatsapp-btn { background: #25D366; }
+        .whatsapp-btn:hover, .whatsapp-btn:active { background: #128C7E; }
+        .new-round-btn { background: #007bff; }
+        .new-round-btn:hover, .new-round-btn:active { background: #0056b3; }
+        .clear-btn { background: #dc3545; }
+        .clear-btn:hover, .clear-btn:active { background: #c82333; }
         .save-indicator {
             position: fixed;
             top: 10px;
@@ -313,40 +299,27 @@
             transition: opacity 0.3s;
             z-index: 1000;
         }
-        .save-indicator.show {
-            opacity: 1;
-        }
-        .stableford-pts {
-            font-size: 11px;
-            margin-top: 2px;
-        }
-        .stableford-pts strong {
-            font-weight: bold;
-        }
-        .gross-display {
-            font-weight: bold;
-            color: #000;
-        }
-        /* Stableford colors: 0=Double Bogey(pink), 1=Bogey(purple), 2=Par(black), 3=Birdie(red), 4=Eagle(blue), 5=Albatross(green) */
-        .pts-0 { color: #FF69B4; font-weight: bold; } /* Double Bogey - Pink */
-        .pts-1 { color: #800080; font-weight: bold; } /* Bogey - Purple */
-        .pts-2 { color: #000000; font-weight: bold; } /* Par - Black */
-        .pts-3 { color: #cc0000; font-weight: bold; } /* Birdie - Red */
-        .pts-4 { color: #0066cc; font-weight: bold; } /* Eagle - Blue */
-        .pts-5 { color: #009900; font-weight: bold; } /* Albatross - Green */
-        .pts-ns { color: #FFD700; font-weight: bold; background: #333; padding: 0 3px; } /* No Score - Yellow */
-        .wlh-col {
-            width: 40px;
-        }
+        .save-indicator.show { opacity: 1; }
+        .stableford-pts { font-size: 11px; margin-top: 2px; }
+        .stableford-pts strong { font-weight: bold; }
+        .gross-display { font-weight: bold; color: #000; }
+        .pts-0 { color: #FF69B4; font-weight: bold; }
+        .pts-1 { color: #800080; font-weight: bold; }
+        .pts-2 { color: #000000; font-weight: bold; }
+        .pts-3 { color: #cc0000; font-weight: bold; }
+        .pts-4 { color: #0066cc; font-weight: bold; }
+        .pts-5 { color: #009900; font-weight: bold; }
+        .pts-ns { color: #FFD700; font-weight: bold; background: #333; padding: 0 3px; }
+        .wlh-col { width: 40px; }
         .yards-red {
-            background: #c40000 !important; /* deep red like reference image */
-            color: #ffffff; /* white text for contrast */
+            background: #c40000 !important;
+            color: #ffffff;
             width: 45px;
             font-weight: bold;
         }
         .yards-red input {
             color: #ffffff;
-            -webkit-text-fill-color: #ffffff; /* iOS Safari ensures white text */
+            -webkit-text-fill-color: #ffffff;
             background: transparent;
             font-weight: bold;
             caret-color: #ffffff;
@@ -355,35 +328,12 @@
             color: #ffe5e5;
             opacity: 0.85;
         }
-        .par-red {
-            color: #cc0000;
-            width: 30px;
-            font-weight: bold;
-        }
-        .si-red {
-            color: #cc0000;
-            width: 30px;
-        }
-        .totals-row td {
-            font-weight: bold;
-            background: #f8f8f8;
-        }
-        .out-row td, .in-row td {
-            font-weight: bold;
-            background: #ffffcc;
-        }
-        .divider-row {
-            background: #cc0000 !important;
-            color: white !important;
-            font-size: 10px !important;
-            font-weight: bold;
-        }
-        .divider-row td {
-            background: #cc0000 !important;
-            color: white !important;
-            padding: 5px !important;
-	    text-align: center !important;
-        }
+        .par-red { color: #cc0000; width: 30px; font-weight: bold; }
+        .si-red { color: #cc0000; width: 30px; }
+        .totals-row td { font-weight: bold; background: #f8f8f8; }
+        .out-row td, .in-row td { font-weight: bold; background: #ffffcc; }
+        .divider-row { background: #cc0000 !important; color: white !important; font-size: 10px !important; font-weight: bold; }
+        .divider-row td { background: #cc0000 !important; color: white !important; padding: 5px !important; text-align: center !important; }
         .bottom-section {
             display: flex;
             flex-direction: column;
@@ -392,36 +342,19 @@
             font-size: 12px;
         }
         @media (min-width: 768px) {
-            .bottom-section {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 20px;
-            }
+            .bottom-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         }
-        .result-box {
-            border: 1px solid #333;
-            padding: 10px;
-        }
-        .result-box table {
-            width: 100%;
-        }
-        .result-box td {
-            padding: 3px;
-        }
-        .result-box input {
-            width: 80px;
-            border: 1px solid #ccc;
-            padding: 2px;
-        }
+        .result-box { border: 1px solid #333; padding: 10px; }
+        .result-box table { width: 100%; }
+        .result-box td { padding: 3px; }
+        .result-box input { width: 80px; border: 1px solid #ccc; padding: 2px; }
         .signature-section {
             margin-top: 15px;
             display: flex;
             justify-content: space-between;
             gap: 20px;
         }
-        .signature-line {
-            display: none; /* replaced by interactive signature pads */
-        }
+        .signature-line { display: none; }
         .signature-box {
             flex: 1;
             display: flex;
@@ -429,16 +362,13 @@
             gap: 6px;
             min-width: 0;
         }
-        .sig-header {
-            font-size: 12px;
-            color: #333;
-        }
+        .sig-header { font-size: 12px; color: #333; }
         .sig-canvas {
             width: 100%;
             height: 90px;
             background: #fff;
             border-bottom: 1px dotted #333;
-            touch-action: none; /* important for iOS/Android drawing */
+            touch-action: none;
             border-radius: 2px 2px 0 0;
         }
         .sig-typed {
@@ -447,14 +377,10 @@
             border-bottom: 1px dotted #333;
             padding: 6px 4px;
             font-size: 14px;
-            display: none; /* toggled on demand */
+            display: none;
             background: transparent;
         }
-        .sig-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 4px;
-        }
+        .sig-actions { display: flex; gap: 8px; margin-top: 4px; }
         .sig-btn {
             color: white;
             background: #007bff;
@@ -465,34 +391,16 @@
             cursor: pointer;
             touch-action: manipulation;
         }
-        .sig-btn.clear {
-            background: #6c757d;
-        }
+        .sig-btn.clear { background: #6c757d; }
         @media (max-width: 767px) {
             .sig-canvas { height: 110px; }
             .signature-section { gap: 10px; }
         }
-        .editable {
-            background: #ffffd0;
-        }
-        .player-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .player-header input {
-            width: 50px;
-            text-align: center;
-            font-size: 10px;
-            margin-top: 2px;
-        }
-        .handicap-input {
-            background: #e0ffe0 !important;
-        }
-        h3 {
-            margin: 5px 0;
-            font-size: 14px;
-        }
+        .editable { background: #ffffd0; }
+        .player-header { display: flex; flex-direction: column; align-items: center; }
+        .player-header input { width: 50px; text-align: center; font-size: 10px; margin-top: 2px; }
+        .handicap-input { background: #e0ffe0 !important; }
+        h3 { margin: 5px 0; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -619,9 +527,7 @@
                     <th class="si-red">SI</th>
                 </tr>
             </thead>
-            <tbody id="frontNine">
-                <!-- Front 9 will be populated by JS -->
-            </tbody>
+            <tbody id="frontNine"></tbody>
             <tbody>
                 <tr class="out-row">
                     <td></td>
@@ -640,20 +546,16 @@
                 </tr>
             </tbody>
             <tbody>
-               <tbody>
-    	<tr class="divider-row">
-        <td colspan="5"></td>
-        <td id="dividerPlayerA">Player A</td>
-        <td id="dividerPlayerB">Player B</td>
-        <td id="dividerPlayerC">Player C</td>
-        <td id="dividerPlayerD">Player D</td>
-        <td colspan="4"></td>
-    	</tr>
-	</tbody>
+                <tr class="divider-row">
+                    <td colspan="5"></td>
+                    <td id="dividerPlayerA">Player A</td>
+                    <td id="dividerPlayerB">Player B</td>
+                    <td id="dividerPlayerC">Player C</td>
+                    <td id="dividerPlayerD">Player D</td>
+                    <td colspan="4"></td>
+                </tr>
             </tbody>
-            <tbody id="backNine">
-                <!-- Back 9 will be populated by JS -->
-            </tbody>
+            <tbody id="backNine"></tbody>
             <tbody>
                 <tr class="in-row">
                     <td></td>
@@ -767,46 +669,43 @@
         </div>
 
         <div class="btn-container">
-            <button class="whatsapp-btn" onclick="shareToWhatsApp()">
-                📱 Share
-            </button>
-            <button class="new-round-btn" onclick="newRound()">
-                🏌️ New Round
-            </button>
-            <button class="clear-btn" onclick="clearAllData()">
-                🗑️ Clear All
-            </button>
+            <button class="whatsapp-btn" onclick="shareToWhatsApp()">📱 Share</button>
+            <button class="new-round-btn" onclick="newRound()">🏌️ New Round</button>
+            <button class="clear-btn" onclick="clearAllData()">🗑️ Clear All</button>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
-        // Course data from the scorecard image
-        const courseData = {
+        // ─── DEFAULT course data (used when nothing is saved yet) ───────────────
+        const defaultCourseData = {
             front: [
-                { hole: 1, white: 288, yellow: 271, par: 4, si: 16, red: 245, parRed: 4, siRed: 12 },
-                { hole: 2, white: 191, yellow: 183, par: 3, si: 10, red: 182, parRed: 3, siRed: 16 },
-                { hole: 3, white: 405, yellow: 398, par: 4, si: 4, red: 372, parRed: 4, siRed: 2 },
-                { hole: 4, white: 381, yellow: 363, par: 4, si: 6, red: 320, parRed: 4, siRed: 6 },
-                { hole: 5, white: 355, yellow: 353, par: 4, si: 14, red: 335, parRed: 4, siRed: 8 },
-                { hole: 6, white: 416, yellow: 410, par: 4, si: 2, red: 399, parRed: 5, siRed: 14 },
-                { hole: 7, white: 561, yellow: 505, par: 5, si: 8, red: 491, parRed: 5, siRed: 4 },
-                { hole: 8, white: 175, yellow: 156, par: 3, si: 12, red: 141, parRed: 3, siRed: 18 },
-                { hole: 9, white: 351, yellow: 336, par: 4, si: 18, red: 314, parRed: 4, siRed: 10 }
+                { hole: 1,  white: 288, yellow: 271, par: 4, si: 16, red: 245, parRed: 4, siRed: 12 },
+                { hole: 2,  white: 191, yellow: 183, par: 3, si: 10, red: 182, parRed: 3, siRed: 16 },
+                { hole: 3,  white: 405, yellow: 398, par: 4, si:  4, red: 372, parRed: 4, siRed:  2 },
+                { hole: 4,  white: 381, yellow: 363, par: 4, si:  6, red: 320, parRed: 4, siRed:  6 },
+                { hole: 5,  white: 355, yellow: 353, par: 4, si: 14, red: 335, parRed: 4, siRed:  8 },
+                { hole: 6,  white: 416, yellow: 410, par: 4, si:  2, red: 399, parRed: 5, siRed: 14 },
+                { hole: 7,  white: 561, yellow: 505, par: 5, si:  8, red: 491, parRed: 5, siRed:  4 },
+                { hole: 8,  white: 175, yellow: 156, par: 3, si: 12, red: 141, parRed: 3, siRed: 18 },
+                { hole: 9,  white: 351, yellow: 336, par: 4, si: 18, red: 314, parRed: 4, siRed: 10 }
             ],
             back: [
-                { hole: 10, white: 401, yellow: 388, par: 4, si: 5, red: 352, parRed: 4, siRed: 3 },
-                { hole: 11, white: 367, yellow: 360, par: 4, si: 7, red: 325, parRed: 4, siRed: 7 },
+                { hole: 10, white: 401, yellow: 388, par: 4, si:  5, red: 352, parRed: 4, siRed:  3 },
+                { hole: 11, white: 367, yellow: 360, par: 4, si:  7, red: 325, parRed: 4, siRed:  7 },
                 { hole: 12, white: 491, yellow: 472, par: 5, si: 17, red: 424, parRed: 5, siRed: 11 },
-                { hole: 13, white: 397, yellow: 390, par: 4, si: 1, red: 347, parRed: 4, siRed: 1 },
+                { hole: 13, white: 397, yellow: 390, par: 4, si:  1, red: 347, parRed: 4, siRed:  1 },
                 { hole: 14, white: 164, yellow: 148, par: 3, si: 13, red: 130, parRed: 3, siRed: 17 },
-                { hole: 15, white: 372, yellow: 326, par: 4, si: 9, red: 254, parRed: 4, siRed: 13 },
-                { hole: 16, white: 476, yellow: 459, par: 5, si: 15, red: 424, parRed: 5, siRed: 9 },
+                { hole: 15, white: 372, yellow: 326, par: 4, si:  9, red: 254, parRed: 4, siRed: 13 },
+                { hole: 16, white: 476, yellow: 459, par: 5, si: 15, red: 424, parRed: 5, siRed:  9 },
                 { hole: 17, white: 184, yellow: 172, par: 3, si: 11, red: 129, parRed: 3, siRed: 15 },
-                { hole: 18, white: 440, yellow: 409, par: 4, si: 3, red: 348, parRed: 4, siRed: 5 }
+                { hole: 18, white: 440, yellow: 409, par: 4, si:  3, red: 348, parRed: 4, siRed:  5 }
             ]
         };
+
+        // Live courseData — will be overwritten from localStorage on load
+        let courseData = JSON.parse(JSON.stringify(defaultCourseData));
 
         const players = ['A', 'B', 'C', 'D'];
         let scores = {};
@@ -817,7 +716,7 @@
             Player: { canvasId: 'sigPlayer', typedId: 'sigPlayerTyped', mode: 'draw', drawing: false, ctx: null }
         };
 
-        // Initialize scores object
+        // ─── Scores init ────────────────────────────────────────────────────────
         function initScores() {
             players.forEach(p => {
                 scores[p] = {};
@@ -827,93 +726,69 @@
             });
         }
 
-        // Calculate stableford points
+        // ─── Stableford calculation ─────────────────────────────────────────────
         function calculateStableford(gross, par, si, playingHcap) {
             if (!gross || gross === '') return 0;
-            
-            // Calculate strokes received/given on this hole
             let strokesReceived = 0;
-            
             if (playingHcap >= 0) {
-                // Positive handicap: receive strokes on lowest SI holes first
-                if (playingHcap >= si) strokesReceived = 1;
+                if (playingHcap >= si)      strokesReceived = 1;
                 if (playingHcap >= si + 18) strokesReceived = 2;
                 if (playingHcap >= si + 36) strokesReceived = 3;
             } else {
-                // Negative handicap: GIVE strokes on highest SI holes first (18, 17, 16...)
-                // E.g., -3 handicap gives shots on SI 18, 17, 16
                 const absHcap = Math.abs(playingHcap);
-                const giveThreshold = 19 - absHcap; // For -3: threshold = 16, so SI >= 16 gives a shot
+                const giveThreshold = 19 - absHcap;
                 if (si >= giveThreshold) strokesReceived = -1;
-                // For very low handicaps (below -18), give 2 shots on highest SI
                 if (absHcap > 18 && si >= (37 - absHcap)) strokesReceived = -2;
             }
-            
             const adjustedPar = par + strokesReceived;
             const diff = adjustedPar - parseInt(gross);
-            
-            // Stableford points: 0 = double bogey or worse, 1 = bogey, 2 = par, 3 = birdie, 4 = eagle, 5 = albatross
-            const points = Math.max(0, diff + 2);
-            return Math.min(points, 5);
+            return Math.min(Math.max(0, diff + 2), 5);
         }
 
-        // Get stroke index for a hole based on selected tee
         function getStrokeIndex(hole) {
             const tee = getSelectedTee();
-            const allData = [...courseData.front, ...courseData.back];
-            const holeData = allData.find(h => h.hole === hole);
+            const holeData = [...courseData.front, ...courseData.back].find(h => h.hole === hole);
             return tee === 'red' ? holeData.siRed : holeData.si;
         }
 
-        // Get par for a hole based on selected tee
         function getPar(hole) {
             const tee = getSelectedTee();
-            const allData = [...courseData.front, ...courseData.back];
-            const holeData = allData.find(h => h.hole === hole);
+            const holeData = [...courseData.front, ...courseData.back].find(h => h.hole === hole);
             return tee === 'red' ? holeData.parRed : holeData.par;
         }
 
-        // WHS Course data for playing handicap calculation
         const courseRatings = {
-            white: { slope: 128, cr: 71.5, par: 71 },
+            white:  { slope: 128, cr: 71.5, par: 71 },
             yellow: { slope: 123, cr: 70.1, par: 71 },
-            red: { slope: 127, cr: 72.5, par: 72 }
+            red:    { slope: 127, cr: 72.5, par: 72 }
         };
 
-        // Get selected tee
         function getSelectedTee() {
-            if (document.getElementById('teeWhite').checked) return 'white';
+            if (document.getElementById('teeWhite').checked)  return 'white';
             if (document.getElementById('teeYellow').checked) return 'yellow';
-            if (document.getElementById('teeRed').checked) return 'red';
+            if (document.getElementById('teeRed').checked)    return 'red';
             return 'white';
         }
 
-        // Calculate WHS Playing Handicap
-        // Formula: Playing Handicap = (Handicap Index × (Slope Rating ÷ 113)) + (Course Rating - Par)
         function calculatePlayingHcap(handicapIndex) {
             const tee = getSelectedTee();
             const rating = courseRatings[tee];
-            const playingHcap = (handicapIndex * (rating.slope / 113)) + (rating.cr - rating.par);
-            return Math.round(playingHcap);
+            return Math.round((handicapIndex * (rating.slope / 113)) + (rating.cr - rating.par));
         }
 
-        // Get playing handicap for a player (from the editable field)
         function getPlayingHcap(player) {
-            const playingHcapInput = document.getElementById('playingHcap' + player);
-            return playingHcapInput ? parseInt(playingHcapInput.value) || 0 : 0;
+            const el = document.getElementById('playingHcap' + player);
+            return el ? parseInt(el.value) || 0 : 0;
         }
 
-        // Calculate and set playing handicap for a player when index changes
         function calculatePlayingHcapForPlayer(player) {
             const hcapInput = document.getElementById('hcap' + player);
             const handicapIndex = hcapInput ? parseFloat(hcapInput.value) || 0 : 0;
-            const playingHcap = calculatePlayingHcap(handicapIndex);
-            document.getElementById('playingHcap' + player).value = playingHcap;
+            document.getElementById('playingHcap' + player).value = calculatePlayingHcap(handicapIndex);
             recalculatePlayerScores(player);
             saveData();
         }
 
-        // Recalculate scores for a player when playing handicap changes
         function recalculatePlayerScores(player) {
             for (let i = 1; i <= 18; i++) {
                 if (scores[player] && scores[player][i] && scores[player][i].gross !== null) {
@@ -924,146 +799,96 @@
             saveData();
         }
 
-        // Update score display
+        // ─── Score display ──────────────────────────────────────────────────────
         function updateScoreDisplay(player, hole) {
             const cell = document.getElementById(`score_${player}_${hole}`);
             const score = scores[player][hole];
             const gross = score.gross;
-            
+
             if (gross !== null && gross !== '') {
-                // Handle NS (No Score) when gross is 0
                 if (parseInt(gross) === 0) {
                     score.stableford = 'NS';
                     cell.innerHTML = `
                         <div class="score-display" onclick="editScore('${player}', ${hole})">
                             <span class="gross-display">0</span>/<strong class="pts-ns">NS</strong>
-                        </div>
-                    `;
+                        </div>`;
                 } else {
                     const par = getPar(hole);
-                    const si = getStrokeIndex(hole);
+                    const si  = getStrokeIndex(hole);
                     const playingHcap = getPlayingHcap(player);
-                    const stableford = calculateStableford(gross, par, si, playingHcap);
-                    score.stableford = stableford;
-                    
-                    const ptsClass = `pts-${stableford}`;
+                    const stableford  = calculateStableford(gross, par, si, playingHcap);
+                    score.stableford  = stableford;
                     cell.innerHTML = `
                         <div class="score-display" onclick="editScore('${player}', ${hole})">
-                            <span class="gross-display">${gross}</span>/<strong class="${ptsClass}">${stableford}</strong>
-                        </div>
-                    `;
+                            <span class="gross-display">${gross}</span>/<strong class="pts-${stableford}">${stableford}</strong>
+                        </div>`;
                 }
                 saveData();
             } else {
                 cell.innerHTML = `
-                    <input type="number" min="0" max="15" 
+                    <input type="number" min="0" max="15"
                            onchange="updateScore('${player}', ${hole}, this.value)"
-                           onblur="if(!this.value) this.style.display='block'">
-                `;
+                           onblur="if(!this.value) this.style.display='block'">`;
             }
-            
             updateTotals();
         }
 
-        // Edit score - show input again
         function editScore(player, hole) {
             const cell = document.getElementById(`score_${player}_${hole}`);
             const currentGross = scores[player][hole].gross || '';
             cell.innerHTML = `
-                <input type="number" value="${currentGross}" min="0" max="15" 
+                <input type="number" value="${currentGross}" min="0" max="15"
                        onchange="updateScore('${player}', ${hole}, this.value)"
                        onkeydown="handleScoreKey(event, '${player}', ${hole})"
-                       onblur="if(this.value) updateScoreDisplay('${player}', ${hole})">
-            `;
-            cell.querySelector('input').focus();
-            cell.querySelector('input').select();
+                       onblur="if(this.value) updateScoreDisplay('${player}', ${hole})">`;
+            const inp = cell.querySelector('input');
+            inp.focus();
+            inp.select();
         }
 
-        // Handle keyboard navigation
         function handleScoreKey(event, player, hole) {
-            const playerOrder = ['A', 'B', 'C', 'D'];
-            const currentIndex = playerOrder.indexOf(player);
-            
             if (event.key === 'Enter' || event.key === 'Tab') {
                 event.preventDefault();
-                const input = event.target;
-                if (input.value) {
-                    updateScore(player, hole, input.value);
-                }
-                // Move to next player (right), or next hole if at Player D
+                if (event.target.value) updateScore(player, hole, event.target.value);
                 moveToNextCell(player, hole, 'right');
-            } else if (event.key === 'ArrowRight') {
-                event.preventDefault();
-                moveToNextCell(player, hole, 'right');
-            } else if (event.key === 'ArrowLeft') {
-                event.preventDefault();
-                moveToNextCell(player, hole, 'left');
-            } else if (event.key === 'ArrowDown' && hole < 18) {
-                event.preventDefault();
-                focusCell(player, hole + 1);
-            } else if (event.key === 'ArrowUp' && hole > 1) {
-                event.preventDefault();
-                focusCell(player, hole - 1);
-            }
+            } else if (event.key === 'ArrowRight') { event.preventDefault(); moveToNextCell(player, hole, 'right'); }
+            else if (event.key === 'ArrowLeft')    { event.preventDefault(); moveToNextCell(player, hole, 'left'); }
+            else if (event.key === 'ArrowDown' && hole < 18) { event.preventDefault(); focusCell(player, hole + 1); }
+            else if (event.key === 'ArrowUp'   && hole > 1)  { event.preventDefault(); focusCell(player, hole - 1); }
         }
 
-        // Move to next/previous cell
         function moveToNextCell(player, hole, direction) {
-            const playerOrder = ['A', 'B', 'C', 'D'];
-            const currentIndex = playerOrder.indexOf(player);
-            
+            const order = ['A', 'B', 'C', 'D'];
+            const idx   = order.indexOf(player);
             if (direction === 'right') {
-                if (currentIndex < 3) {
-                    // Move to next player same hole
-                    focusCell(playerOrder[currentIndex + 1], hole);
-                } else if (hole < 18) {
-                    // At Player D, move to Player A next hole
-                    focusCell('A', hole + 1);
-                }
-            } else if (direction === 'left') {
-                if (currentIndex > 0) {
-                    // Move to previous player same hole
-                    focusCell(playerOrder[currentIndex - 1], hole);
-                } else if (hole > 1) {
-                    // At Player A, move to Player D previous hole
-                    focusCell('D', hole - 1);
-                }
+                if (idx < 3)   focusCell(order[idx + 1], hole);
+                else if (hole < 18) focusCell('A', hole + 1);
+            } else {
+                if (idx > 0)   focusCell(order[idx - 1], hole);
+                else if (hole > 1) focusCell('D', hole - 1);
             }
         }
 
-        // Focus a specific cell
         function focusCell(player, hole) {
             const cell = document.getElementById(`score_${player}_${hole}`);
-            if (cell) {
-                const input = cell.querySelector('input');
-                if (input) {
-                    input.focus();
-                } else {
-                    editScore(player, hole);
-                }
-            }
+            if (!cell) return;
+            const inp = cell.querySelector('input');
+            if (inp) inp.focus();
+            else editScore(player, hole);
         }
 
-        // Update score
         function updateScore(player, hole, value) {
             scores[player][hole].gross = value ? parseInt(value) : null;
             updateScoreDisplay(player, hole);
-            
-            // Auto-advance to next player (right)
-            if (value) {
-                setTimeout(() => moveToNextCell(player, hole, 'right'), 100);
-            }
+            if (value) setTimeout(() => moveToNextCell(player, hole, 'right'), 100);
         }
 
-        // Calculate all stableford (when tee selection changes)
         function calculateAllStableford() {
             players.forEach(p => {
-                // Recalculate playing handicap based on new tee
                 const hcapInput = document.getElementById('hcap' + p);
                 const handicapIndex = hcapInput ? parseFloat(hcapInput.value) || 0 : 0;
                 if (handicapIndex > 0) {
-                    const playingHcap = calculatePlayingHcap(handicapIndex);
-                    document.getElementById('playingHcap' + p).value = playingHcap;
+                    document.getElementById('playingHcap' + p).value = calculatePlayingHcap(handicapIndex);
                 }
                 for (let i = 1; i <= 18; i++) {
                     if (scores[p] && scores[p][i] && scores[p][i].gross) {
@@ -1075,199 +900,117 @@
             saveData();
         }
 
-        // Update totals
+        // ─── Totals ─────────────────────────────────────────────────────────────
         function updateTotals() {
             players.forEach(p => {
-                let outGross = 0, outPts = 0;
-                let inGross = 0, inPts = 0;
-                let outCount = 0, inCount = 0;
-                
-                for (let i = 1; i <= 9; i++) {
-                    if (scores[p][i].gross) {
-                        outGross += scores[p][i].gross;
-                        outPts += scores[p][i].stableford;
-                        outCount++;
-                    }
-                }
-                for (let i = 10; i <= 18; i++) {
-                    if (scores[p][i].gross) {
-                        inGross += scores[p][i].gross;
-                        inPts += scores[p][i].stableford;
-                        inCount++;
-                    }
-                }
-                
-                document.getElementById('out' + p).innerHTML = outCount > 0 ? 
-                    `${outGross}<span class="stableford-pts pts-${outPts > 18 ? 3 : 2}">/${outPts}</span>` : '-';
-                document.getElementById('in' + p).innerHTML = inCount > 0 ? 
-                    `${inGross}<span class="stableford-pts pts-${inPts > 18 ? 3 : 2}">/${inPts}</span>` : '-';
-                document.getElementById('totalOut' + p).innerHTML = outCount > 0 ? 
-                    `${outGross}<span class="stableford-pts pts-${outPts > 18 ? 3 : 2}">/${outPts}</span>` : '-';
-                document.getElementById('total' + p).innerHTML = (outCount > 0 || inCount > 0) ? 
+                let outGross = 0, outPts = 0, outCount = 0;
+                let inGross  = 0, inPts  = 0, inCount  = 0;
+                for (let i = 1;  i <= 9;  i++) { if (scores[p][i].gross) { outGross += scores[p][i].gross; outPts += scores[p][i].stableford; outCount++; } }
+                for (let i = 10; i <= 18; i++) { if (scores[p][i].gross) { inGross  += scores[p][i].gross; inPts  += scores[p][i].stableford; inCount++;  } }
+
+                document.getElementById('out'     + p).innerHTML = outCount > 0 ? `${outGross}<span class="stableford-pts pts-${outPts > 18 ? 3 : 2}">/${outPts}</span>` : '-';
+                document.getElementById('in'      + p).innerHTML = inCount  > 0 ? `${inGross}<span class="stableford-pts pts-${inPts > 18 ? 3 : 2}">/${inPts}</span>` : '-';
+                document.getElementById('totalOut'+ p).innerHTML = outCount > 0 ? `${outGross}<span class="stableford-pts pts-${outPts > 18 ? 3 : 2}">/${outPts}</span>` : '-';
+                document.getElementById('total'   + p).innerHTML = (outCount > 0 || inCount > 0) ?
                     `${outGross + inGross}<span class="stableford-pts pts-${(outPts + inPts) > 36 ? 3 : 2}">/${outPts + inPts}</span>` : '-';
             });
-            
-            // Update main stableford total for Player A
+
             let totalPts = 0;
-            for (let i = 1; i <= 18; i++) {
-                totalPts += scores['A'][i].stableford;
-            }
+            for (let i = 1; i <= 18; i++) totalPts += scores['A'][i].stableford;
             document.getElementById('stablefordTotal').textContent = totalPts;
         }
 
-        // Update tee selection
-        function updateTeeSelection() {
-            calculateAllStableford();
-        }
+        function updateTeeSelection() { calculateAllStableford(); }
 
-        // Update player name in scorecard header
+        // ─── Player headers ─────────────────────────────────────────────────────
         function updatePlayerHeader(player) {
             const nameInput = document.getElementById('player' + player);
-            const header = document.getElementById('header' + player);
+            const header    = document.getElementById('header' + player);
             if (nameInput && header) {
-                const name = nameInput.value.trim();
-                header.textContent = name || 'Player ' + player;
+                header.textContent = nameInput.value.trim() || 'Player ' + player;
             }
-            updateDividerPlayerNames();  // ADD THIS LINE
-    	    saveData();
+            updateDividerPlayerNames();
+            saveData();
         }
 
-        // Update all player headers (called on load)
         function updateAllPlayerHeaders() {
-    	['A', 'B', 'C', 'D'].forEach(p => updatePlayerHeader(p));
-    	updateDividerPlayerNames();
-	}
-	function updateDividerPlayerNames() {
-    var cellA = document.getElementById('dividerPlayerA');
-    var cellB = document.getElementById('dividerPlayerB');
-    var cellC = document.getElementById('dividerPlayerC');
-    var cellD = document.getElementById('dividerPlayerD');
-    
-    var headerA = document.getElementById('headerA');
-    var headerB = document.getElementById('headerB');
-    var headerC = document.getElementById('headerC');
-    var headerD = document.getElementById('headerD');
-    
-    if (cellA && headerA) cellA.textContent = headerA.textContent;
-    if (cellB && headerB) cellB.textContent = headerB.textContent;
-    if (cellC && headerC) cellC.textContent = headerC.textContent;
-    if (cellD && headerD) cellD.textContent = headerD.textContent;
-}
+            ['A', 'B', 'C', 'D'].forEach(p => updatePlayerHeader(p));
+            updateDividerPlayerNames();
+        }
 
-        // Update yardage and recalculate totals
+        function updateDividerPlayerNames() {
+            ['A', 'B', 'C', 'D'].forEach(p => {
+                const cell   = document.getElementById('dividerPlayer' + p);
+                const header = document.getElementById('header' + p);
+                if (cell && header) cell.textContent = header.textContent;
+            });
+        }
+
+        // ─── Yardage / Par / SI updates ─────────────────────────────────────────
         function updateYardage(input, hole, teeColor) {
-            const value = parseInt(input.value) || 0;
-            
-            // Find and update the hole data
-            const allData = [...courseData.front, ...courseData.back];
-            const holeData = allData.find(h => h.hole === hole);
-            if (holeData) {
-                holeData[teeColor] = value;
-            }
-            
-            // Recalculate totals
+            const value    = parseInt(input.value) || 0;
+            const holeData = [...courseData.front, ...courseData.back].find(h => h.hole === hole);
+            if (holeData) holeData[teeColor] = value;
             calculateYardageTotals();
             saveData();
         }
 
-        // Update par and recalculate
         function updatePar(input, hole) {
-            const value = parseInt(input.value) || 0;
-            
-            const allData = [...courseData.front, ...courseData.back];
-            const holeData = allData.find(h => h.hole === hole);
-            if (holeData) {
-                holeData.par = value;
-            }
-            
+            const value    = parseInt(input.value) || 0;
+            const holeData = [...courseData.front, ...courseData.back].find(h => h.hole === hole);
+            if (holeData) holeData.par = value;
             calculateYardageTotals();
             calculateAllStableford();
             saveData();
         }
 
-        // Update Red par and recalculate
         function updateParRed(input, hole) {
-            const value = parseInt(input.value) || 0;
-            
-            const allData = [...courseData.front, ...courseData.back];
-            const holeData = allData.find(h => h.hole === hole);
-            if (holeData) {
-                holeData.parRed = value;
-            }
-            
+            const value    = parseInt(input.value) || 0;
+            const holeData = [...courseData.front, ...courseData.back].find(h => h.hole === hole);
+            if (holeData) holeData.parRed = value;
             calculateYardageTotals();
             calculateAllStableford();
             saveData();
         }
 
-        // Update SI (Stroke Index) and recalculate
         function updateSI(input, hole, siType) {
-            const value = parseInt(input.value) || 1;
-            
-            const allData = [...courseData.front, ...courseData.back];
-            const holeData = allData.find(h => h.hole === hole);
-            if (holeData) {
-                holeData[siType] = value;
-            }
-            
+            const value    = parseInt(input.value) || 1;
+            const holeData = [...courseData.front, ...courseData.back].find(h => h.hole === hole);
+            if (holeData) holeData[siType] = value;
             calculateAllStableford();
             saveData();
         }
 
-        // Calculate all yardage totals
         function calculateYardageTotals() {
-            // Front 9 totals
             let outWhite = 0, outYellow = 0, outRed = 0, outPar = 0, outParRed = 0;
-            courseData.front.forEach(h => {
-                outWhite += h.white || 0;
-                outYellow += h.yellow || 0;
-                outRed += h.red || 0;
-                outPar += h.par || 0;
-                outParRed += h.parRed || 0;
-            });
-            
-            // Back 9 totals
+            courseData.front.forEach(h => { outWhite += h.white||0; outYellow += h.yellow||0; outRed += h.red||0; outPar += h.par||0; outParRed += h.parRed||0; });
             let inWhite = 0, inYellow = 0, inRed = 0, inPar = 0, inParRed = 0;
-            courseData.back.forEach(h => {
-                inWhite += h.white || 0;
-                inYellow += h.yellow || 0;
-                inRed += h.red || 0;
-                inPar += h.par || 0;
-                inParRed += h.parRed || 0;
-            });
-            
-            // Update OUT row
-            document.getElementById('outWhite').textContent = outWhite;
-            document.getElementById('outYellow').textContent = outYellow;
-            document.getElementById('outRed').textContent = outRed;
-            document.getElementById('outPar').textContent = outPar;
-            document.getElementById('outParRed').textContent = outParRed;
-            
-            // Update IN row
-            document.getElementById('inWhite').textContent = inWhite;
-            document.getElementById('inYellow').textContent = inYellow;
-            document.getElementById('inRed').textContent = inRed;
-            document.getElementById('inPar').textContent = inPar;
-            document.getElementById('inParRed').textContent = inParRed;
-            
-            // Update second OUT row (before total)
-            document.getElementById('totalWhiteOut').textContent = outWhite;
+            courseData.back.forEach(h  => { inWhite  += h.white||0; inYellow  += h.yellow||0; inRed  += h.red||0; inPar  += h.par||0; inParRed  += h.parRed||0; });
+
+            document.getElementById('outWhite').textContent    = outWhite;
+            document.getElementById('outYellow').textContent   = outYellow;
+            document.getElementById('outRed').textContent      = outRed;
+            document.getElementById('outPar').textContent      = outPar;
+            document.getElementById('outParRed').textContent   = outParRed;
+            document.getElementById('inWhite').textContent     = inWhite;
+            document.getElementById('inYellow').textContent    = inYellow;
+            document.getElementById('inRed').textContent       = inRed;
+            document.getElementById('inPar').textContent       = inPar;
+            document.getElementById('inParRed').textContent    = inParRed;
+            document.getElementById('totalWhiteOut').textContent  = outWhite;
             document.getElementById('totalYellowOut').textContent = outYellow;
-            document.getElementById('totalRedOut').textContent = outRed;
-            document.getElementById('totalParOut').textContent = outPar;
+            document.getElementById('totalRedOut').textContent    = outRed;
+            document.getElementById('totalParOut').textContent    = outPar;
             document.getElementById('totalParRedOut').textContent = outParRed;
-            
-            // Update TOTAL row
-            document.getElementById('totalWhite').textContent = outWhite + inWhite;
+            document.getElementById('totalWhite').textContent  = outWhite + inWhite;
             document.getElementById('totalYellow').textContent = outYellow + inYellow;
-            document.getElementById('totalRed').textContent = outRed + inRed;
-            document.getElementById('totalPar').textContent = outPar + inPar;
+            document.getElementById('totalRed').textContent    = outRed + inRed;
+            document.getElementById('totalPar').textContent    = outPar + inPar;
             document.getElementById('totalParRed').textContent = outParRed + inParRed;
         }
 
-        // Generate hole row HTML
+        // ─── Generate hole rows from courseData ──────────────────────────────────
         function generateHoleRow(holeData) {
-            const isRed = document.getElementById('teeRed')?.checked || false;
             return `
                 <tr>
                     <td class="hole-num">${holeData.hole}</td>
@@ -1288,80 +1031,84 @@
                         <input type="number" min="0" max="15" onchange="updateScore('D', ${holeData.hole}, this.value)" onkeydown="handleScoreKey(event, 'D', ${holeData.hole})">
                     </td>
                     <td class="wlh-col"></td>
-                    <td class="yards-red"><input type="number" value="${holeData.red}" style="width:40px;text-align:center;border:none;color:#cc0000;font-weight:bold;background:transparent;" onchange="updateYardage(this, ${holeData.hole}, 'red')"></td>
+                    <td class="yards-red"><input type="number" value="${holeData.red}" style="width:40px;text-align:center;border:none;color:#ffffff;font-weight:bold;background:transparent;" onchange="updateYardage(this, ${holeData.hole}, 'red')"></td>
                     <td class="par-red"><input type="number" value="${holeData.parRed}" style="width:25px;text-align:center;border:none;color:#cc0000;font-weight:bold;background:transparent;" onchange="updateParRed(this, ${holeData.hole})"></td>
                     <td class="si-red"><input type="number" value="${holeData.siRed}" style="width:25px;text-align:center;border:none;color:#cc0000;font-weight:bold;background:transparent;" onchange="updateSI(this, ${holeData.hole}, 'siRed')"></td>
-                </tr>
-            `;
+                </tr>`;
         }
 
-        // Initialize the scorecard
         function initScorecard() {
-            const frontNine = document.getElementById('frontNine');
-            const backNine = document.getElementById('backNine');
-            
-            frontNine.innerHTML = courseData.front.map(h => generateHoleRow(h)).join('');
-            backNine.innerHTML = courseData.back.map(h => generateHoleRow(h)).join('');
+            document.getElementById('frontNine').innerHTML = courseData.front.map(h => generateHoleRow(h)).join('');
+            document.getElementById('backNine').innerHTML  = courseData.back.map(h  => generateHoleRow(h)).join('');
         }
 
-        // Save data to localStorage
+        // ─── SAVE ────────────────────────────────────────────────────────────────
+        // courseData is now included so PAR / SI / yardage changes persist on refresh
         function saveData() {
             const data = {
                 competition: document.getElementById('competition')?.value || '',
-                date: document.getElementById('date')?.value || '',
-                startTime: document.getElementById('startTime')?.value || '',
-                finishTime: document.getElementById('finishTime')?.value || '',
-                tee: getSelectedTee(),
-                players: {},
-                scores: scores,
-                signatures: getSignatureState()
+                date:        document.getElementById('date')?.value || '',
+                startTime:   document.getElementById('startTime')?.value || '',
+                finishTime:  document.getElementById('finishTime')?.value || '',
+                tee:         getSelectedTee(),
+                courseData:  courseData,          // ← KEY FIX: persist course edits
+                players:     {},
+                scores:      scores,
+                signatures:  getSignatureState()
             };
             players.forEach(p => {
                 data.players[p] = {
-                    name: document.getElementById('player' + p)?.value || '',
-                    hcap: document.getElementById('hcap' + p)?.value || '',
+                    name:        document.getElementById('player'      + p)?.value || '',
+                    hcap:        document.getElementById('hcap'        + p)?.value || '',
                     playingHcap: document.getElementById('playingHcap' + p)?.value || 0
                 };
             });
             localStorage.setItem('golfScorecard', JSON.stringify(data));
-            
-            // Show save indicator
+
             const indicator = document.getElementById('saveIndicator');
             indicator.classList.add('show');
             setTimeout(() => indicator.classList.remove('show'), 1500);
         }
 
-        // Load data from localStorage
+        // ─── LOAD ────────────────────────────────────────────────────────────────
         function loadData() {
             const saved = localStorage.getItem('golfScorecard');
             if (saved) {
                 try {
                     const data = JSON.parse(saved);
-                    
+
+                    // ── Restore courseData FIRST so generateHoleRow uses saved values ──
+                    if (data.courseData && data.courseData.front && data.courseData.back) {
+                        courseData = data.courseData;
+                    }
+
+                    // Re-render the table rows with restored courseData
+                    initScorecard();
+
                     // Restore form fields
                     if (data.competition) document.getElementById('competition').value = data.competition;
-                    if (data.date) document.getElementById('date').value = data.date;
-                    if (data.startTime) document.getElementById('startTime').value = data.startTime;
-                    if (data.finishTime) document.getElementById('finishTime').value = data.finishTime;
-                    
+                    if (data.date)        document.getElementById('date').value        = data.date;
+                    if (data.startTime)   document.getElementById('startTime').value   = data.startTime;
+                    if (data.finishTime)  document.getElementById('finishTime').value  = data.finishTime;
+
                     // Restore tee selection
                     if (data.tee) {
-                        document.getElementById('teeWhite').checked = data.tee === 'white';
+                        document.getElementById('teeWhite').checked  = data.tee === 'white';
                         document.getElementById('teeYellow').checked = data.tee === 'yellow';
-                        document.getElementById('teeRed').checked = data.tee === 'red';
+                        document.getElementById('teeRed').checked    = data.tee === 'red';
                     }
-                    
-                // Restore player info
-                if (data.players) {
-                    players.forEach(p => {
-                        if (data.players[p]) {
-                            document.getElementById('player' + p).value = data.players[p].name || '';
-                            document.getElementById('hcap' + p).value = data.players[p].hcap || '';
-                            document.getElementById('playingHcap' + p).value = data.players[p].playingHcap || 0;
-                        }
-                    });
-                }
-                    
+
+                    // Restore player info
+                    if (data.players) {
+                        players.forEach(p => {
+                            if (data.players[p]) {
+                                document.getElementById('player'      + p).value = data.players[p].name        || '';
+                                document.getElementById('hcap'        + p).value = data.players[p].hcap        || '';
+                                document.getElementById('playingHcap' + p).value = data.players[p].playingHcap || 0;
+                            }
+                        });
+                    }
+
                     // Restore scores
                     if (data.scores) {
                         scores = data.scores;
@@ -1375,12 +1122,12 @@
                     }
 
                     // Restore signatures
-                    if (data.signatures) {
-                        restoreSignatureState(data.signatures);
-                    }
-                    
+                    if (data.signatures) restoreSignatureState(data.signatures);
+
                     calculateAllStableford();
                     updateAllPlayerHeaders();
+                    calculateYardageTotals();
+
                     console.log('Data loaded successfully');
                 } catch(e) {
                     console.error('Error loading data:', e);
@@ -1391,22 +1138,20 @@
             }
         }
 
-        // Add change listeners to save data
+        // ─── Auto-save listeners ─────────────────────────────────────────────────
         function addSaveListeners() {
-            const fields = ['competition', 'date', 'startTime', 'finishTime', 'playerA', 'playerB', 'playerC', 'playerD', 'hcapA', 'hcapB', 'hcapC', 'hcapD', 'playingHcapA', 'playingHcapB', 'playingHcapC', 'playingHcapD'];
+            const fields = ['competition', 'date', 'startTime', 'finishTime',
+                            'playerA', 'playerB', 'playerC', 'playerD',
+                            'hcapA', 'hcapB', 'hcapC', 'hcapD',
+                            'playingHcapA', 'playingHcapB', 'playingHcapC', 'playingHcapD'];
             fields.forEach(id => {
                 const el = document.getElementById(id);
-                if (el) {
-                    el.addEventListener('change', saveData);
-                    el.addEventListener('input', saveData);
-                }
+                if (el) { el.addEventListener('change', saveData); el.addEventListener('input', saveData); }
             });
-            document.querySelectorAll('input[name="tee"]').forEach(el => {
-                el.addEventListener('change', saveData);
-            });
+            document.querySelectorAll('input[name="tee"]').forEach(el => el.addEventListener('change', saveData));
         }
 
-        // Clear all data
+        // ─── Clear / New round ───────────────────────────────────────────────────
         function clearAllData() {
             if (confirm('Clear ALL data including player names and handicaps?')) {
                 localStorage.removeItem('golfScorecard');
@@ -1414,168 +1159,103 @@
             }
         }
 
-        // New round - keep player info, clear scores
         function newRound() {
             if (confirm('Start new round? This will clear all scores but keep player details.')) {
-                // Reset scores only
                 initScores();
                 players.forEach(p => {
                     for (let i = 1; i <= 18; i++) {
                         const cell = document.getElementById(`score_${p}_${i}`);
-                        if (cell) {
-                            cell.innerHTML = `<input type="number" min="0" max="15" onchange="updateScore('${p}', ${i}, this.value)">`;
-                        }
+                        if (cell) cell.innerHTML = `<input type="number" min="0" max="15" onchange="updateScore('${p}', ${i}, this.value)">`;
                     }
                 });
-                // Clear competition and times, keep player info
                 document.getElementById('competition').value = '';
-                document.getElementById('date').value = '';
-                document.getElementById('startTime').value = '';
-                document.getElementById('finishTime').value = '';
+                document.getElementById('date').value        = '';
+                document.getElementById('startTime').value   = '';
+                document.getElementById('finishTime').value  = '';
                 updateTotals();
                 saveData();
             }
         }
 
-        // Detect iOS
-        function isIOS() {
-            return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
-                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-        }
-
-        // Convert dataURL to Blob
-        function dataURLtoBlob(dataURL) {
-            const arr = dataURL.split(',');
-            const mime = arr[0].match(/:(.*?);/)[1];
-            const bstr = atob(arr[1]);
-            let n = bstr.length;
-            const u8arr = new Uint8Array(n);
-            while (n--) {
-                u8arr[n] = bstr.charCodeAt(n);
-            }
-            return new Blob([u8arr], { type: mime });
-        }
-
-        // Signature utilities
+        // ─── Signature pads ──────────────────────────────────────────────────────
         function initSignaturePads() {
             ['Marker', 'Player'].forEach(key => initSignaturePad(key));
-            window.addEventListener('resize', () => {
-                resizeSignaturePad('Marker');
-                resizeSignaturePad('Player');
-            });
+            window.addEventListener('resize', () => { resizeSignaturePad('Marker'); resizeSignaturePad('Player'); });
         }
 
         function initSignaturePad(key) {
-            const pad = signaturePads[key];
+            const pad    = signaturePads[key];
             const canvas = document.getElementById(pad.canvasId);
-            const typed = document.getElementById(pad.typedId);
-            // Ensure mode default
+            const typed  = document.getElementById(pad.typedId);
             pad.mode = (localStorage.getItem('sigMode_' + key) || 'draw');
             setSigModeUI(key, pad.mode);
-            // Size and context
             configureCanvasForDPR(canvas, 90);
             pad.ctx = canvas.getContext('2d');
-            // Drawing style
-            pad.ctx.lineWidth = 2;
-            pad.ctx.lineCap = 'round';
-            pad.ctx.strokeStyle = '#000';
+            pad.ctx.lineWidth = 2; pad.ctx.lineCap = 'round'; pad.ctx.strokeStyle = '#000';
 
             const getPos = (e) => {
                 const rect = canvas.getBoundingClientRect();
-                const x = (e.clientX ?? (e.touches?.[0]?.clientX || 0)) - rect.left;
-                const y = (e.clientY ?? (e.touches?.[0]?.clientY || 0)) - rect.top;
-                return { x, y };
+                return {
+                    x: (e.clientX ?? (e.touches?.[0]?.clientX || 0)) - rect.left,
+                    y: (e.clientY ?? (e.touches?.[0]?.clientY || 0)) - rect.top
+                };
             };
+            const onDown = (e) => { e.preventDefault(); if (pad.mode !== 'draw') return; pad.drawing = true; canvas.setPointerCapture?.(e.pointerId || 0); const {x,y} = getPos(e); pad.ctx.beginPath(); pad.ctx.moveTo(x,y); };
+            const onMove = (e) => { if (!pad.drawing) return; e.preventDefault(); const {x,y} = getPos(e); pad.ctx.lineTo(x,y); pad.ctx.stroke(); };
+            const onUp   = (e) => { if (!pad.drawing) return; e.preventDefault(); pad.drawing = false; saveSignatureState(); };
 
-            const onDown = (e) => {
-                e.preventDefault();
-                if (pad.mode !== 'draw') return;
-                pad.drawing = true;
-                canvas.setPointerCapture?.(e.pointerId || 0);
-                const { x, y } = getPos(e);
-                pad.ctx.beginPath();
-                pad.ctx.moveTo(x, y);
-            };
-            const onMove = (e) => {
-                if (!pad.drawing) return;
-                e.preventDefault();
-                const { x, y } = getPos(e);
-                pad.ctx.lineTo(x, y);
-                pad.ctx.stroke();
-            };
-            const onUp = (e) => {
-                if (!pad.drawing) return;
-                e.preventDefault();
-                pad.drawing = false;
-                saveSignatureState();
-            };
-
-            // Pointer events (with fallbacks)
             if (window.PointerEvent) {
-                canvas.addEventListener('pointerdown', onDown, { passive: false });
-                canvas.addEventListener('pointermove', onMove, { passive: false });
-                canvas.addEventListener('pointerup', onUp, { passive: false });
-                canvas.addEventListener('pointerleave', onUp, { passive: false });
+                canvas.addEventListener('pointerdown',  onDown, { passive: false });
+                canvas.addEventListener('pointermove',  onMove, { passive: false });
+                canvas.addEventListener('pointerup',    onUp,   { passive: false });
+                canvas.addEventListener('pointerleave', onUp,   { passive: false });
             } else {
-                canvas.addEventListener('mousedown', onDown, { passive: false });
-                canvas.addEventListener('mousemove', onMove, { passive: false });
-                canvas.addEventListener('mouseup', onUp, { passive: false });
+                canvas.addEventListener('mousedown',  onDown, { passive: false });
+                canvas.addEventListener('mousemove',  onMove, { passive: false });
+                canvas.addEventListener('mouseup',    onUp,   { passive: false });
                 canvas.addEventListener('touchstart', onDown, { passive: false });
-                canvas.addEventListener('touchmove', onMove, { passive: false });
-                canvas.addEventListener('touchend', onUp, { passive: false });
+                canvas.addEventListener('touchmove',  onMove, { passive: false });
+                canvas.addEventListener('touchend',   onUp,   { passive: false });
             }
-
-            // Save when typing
             typed.addEventListener('input', saveSignatureState);
         }
 
         function configureCanvasForDPR(canvas, cssHeightPx) {
             const ratio = Math.max(window.devicePixelRatio || 1, 1);
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = Math.max(300, Math.floor(rect.width * ratio));
+            const rect  = canvas.getBoundingClientRect();
+            canvas.width  = Math.max(300, Math.floor(rect.width * ratio));
             canvas.height = Math.floor(cssHeightPx * ratio);
             canvas.style.height = cssHeightPx + 'px';
-            const ctx = canvas.getContext('2d');
-            ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+            canvas.getContext('2d').setTransform(ratio, 0, 0, ratio, 0, 0);
         }
 
         function resizeSignaturePad(key) {
-            const pad = signaturePads[key];
+            const pad    = signaturePads[key];
             const canvas = document.getElementById(pad.canvasId);
-            // Preserve existing drawing
             const dataUrl = canvas.toDataURL('image/png');
             configureCanvasForDPR(canvas, parseInt(canvas.style.height) || 90);
             const img = new Image();
-            img.onload = () => {
-                pad.ctx.clearRect(0, 0, canvas.width, canvas.height);
-                pad.ctx.drawImage(img, 0, 0, canvas.width / (window.devicePixelRatio || 1), canvas.height / (window.devicePixelRatio || 1));
-            };
+            img.onload = () => { pad.ctx.clearRect(0,0,canvas.width,canvas.height); pad.ctx.drawImage(img, 0, 0, canvas.width/(window.devicePixelRatio||1), canvas.height/(window.devicePixelRatio||1)); };
             img.src = dataUrl;
         }
 
         function setSigModeUI(key, mode) {
-            const pad = signaturePads[key];
+            const pad    = signaturePads[key];
             const canvas = document.getElementById(pad.canvasId);
-            const typed = document.getElementById(pad.typedId);
-            if (mode === 'draw') {
-                canvas.style.display = 'block';
-                typed.style.display = 'none';
-            } else {
-                canvas.style.display = 'none';
-                typed.style.display = 'block';
-            }
+            const typed  = document.getElementById(pad.typedId);
+            canvas.style.display = mode === 'draw' ? 'block' : 'none';
+            typed.style.display  = mode === 'draw' ? 'none'  : 'block';
             pad.mode = mode;
             localStorage.setItem('sigMode_' + key, mode);
         }
 
         function toggleSigMode(key) {
-            const pad = signaturePads[key];
-            setSigModeUI(key, pad.mode === 'draw' ? 'type' : 'draw');
+            setSigModeUI(key, signaturePads[key].mode === 'draw' ? 'type' : 'draw');
             saveSignatureState();
         }
 
         function clearSignature(key) {
-            const pad = signaturePads[key];
+            const pad    = signaturePads[key];
             const canvas = document.getElementById(pad.canvasId);
             pad.ctx.clearRect(0, 0, canvas.width, canvas.height);
             document.getElementById(pad.typedId).value = '';
@@ -1585,13 +1265,9 @@
         function getSignatureState() {
             const state = {};
             ['Marker', 'Player'].forEach(key => {
-                const pad = signaturePads[key];
+                const pad    = signaturePads[key];
                 const canvas = document.getElementById(pad.canvasId);
-                state[key] = {
-                    mode: pad.mode,
-                    typed: document.getElementById(pad.typedId).value || '',
-                    image: canvas.toDataURL('image/png')
-                };
+                state[key] = { mode: pad.mode, typed: document.getElementById(pad.typedId).value || '', image: canvas.toDataURL('image/png') };
             });
             return state;
         }
@@ -1601,52 +1277,48 @@
                 const padState = state[key];
                 if (!padState) return;
                 setSigModeUI(key, padState.mode || 'draw');
-                const typed = document.getElementById(signaturePads[key].typedId);
-                typed.value = padState.typed || '';
+                document.getElementById(signaturePads[key].typedId).value = padState.typed || '';
                 const canvas = document.getElementById(signaturePads[key].canvasId);
                 if (padState.image) {
                     const img = new Image();
-                    img.onload = () => {
-                        const ctx = canvas.getContext('2d');
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        ctx.drawImage(img, 0, 0, canvas.width / (window.devicePixelRatio || 1), canvas.height / (window.devicePixelRatio || 1));
-                    };
+                    img.onload = () => { const ctx = canvas.getContext('2d'); ctx.clearRect(0,0,canvas.width,canvas.height); ctx.drawImage(img, 0, 0, canvas.width/(window.devicePixelRatio||1), canvas.height/(window.devicePixelRatio||1)); };
                     img.src = padState.image;
                 }
             });
         }
 
         function saveSignatureState() {
-            // Merge into existing saved data to avoid clobbering
             try {
                 const saved = localStorage.getItem('golfScorecard');
-                const data = saved ? JSON.parse(saved) : {};
+                const data  = saved ? JSON.parse(saved) : {};
                 data.signatures = getSignatureState();
                 localStorage.setItem('golfScorecard', JSON.stringify(data));
-            } catch (e) {
-                console.warn('Could not save signatures', e);
-            }
-            // Brief save indicator reuse
+            } catch(e) { console.warn('Could not save signatures', e); }
             const indicator = document.getElementById('saveIndicator');
             indicator.classList.add('show');
             setTimeout(() => indicator.classList.remove('show'), 800);
         }
 
-        // Share to WhatsApp
+        // ─── Share to WhatsApp ───────────────────────────────────────────────────
+        function dataURLtoBlob(dataURL) {
+            const arr  = dataURL.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while (n--) u8arr[n] = bstr.charCodeAt(n);
+            return new Blob([u8arr], { type: mime });
+        }
+
         async function shareToWhatsApp() {
-            const container = document.querySelector('.main-container');
+            const container   = document.querySelector('.main-container');
             const btnContainer = document.querySelector('.btn-container');
             const tableWrapper = document.querySelector('.table-wrapper');
-            const headerInfo = document.querySelector('.header-info');
-            
-            // Hide buttons during capture
             btnContainer.style.display = 'none';
-            // Hide signature controls during capture
             const sigActions = document.querySelectorAll('.sig-actions');
             const prevSigDisplays = Array.from(sigActions).map(el => el.style.display);
             sigActions.forEach(el => el.style.display = 'none');
-            
-            // Store original styles
+
             const originalStyles = {
                 containerWidth: container.style.width,
                 containerMinWidth: container.style.minWidth,
@@ -1654,54 +1326,19 @@
                 tableOverflow: tableWrapper ? tableWrapper.style.overflow : '',
                 bodyOverflow: document.body.style.overflow
             };
-            
-            // Force desktop layout for capture
+
             container.style.width = '950px';
             container.style.minWidth = '950px';
             container.style.position = 'relative';
             if (tableWrapper) tableWrapper.style.overflow = 'visible';
             document.body.style.overflow = 'visible';
-            
-            // Force all hidden columns to show and fix heights
+
             const style = document.createElement('style');
             style.id = 'capture-style';
-            style.textContent = `
-                .yards-white, .yards-red, .wlh-col, .par-red, .si-red { display: table-cell !important; }
-                .scorecard-table { min-width: auto !important; }
-                .main-container { height: auto !important; overflow: visible !important; }
-                .table-wrapper { height: auto !important; overflow: visible !important; }
-                .header-info { display: flex !important; }
-                @media print { body { -webkit-print-color-adjust: exact; } }
-            `;
+            style.textContent = `.yards-white,.yards-red,.wlh-col,.par-red,.si-red{display:table-cell!important}.scorecard-table{min-width:auto!important}.main-container,.table-wrapper{height:auto!important;overflow:visible!important}.header-info{display:flex!important}`;
             document.head.appendChild(style);
-            
-            try {
-                // Longer delay for iOS to apply styles
-                await new Promise(resolve => setTimeout(resolve, 300));
-                
-                // Scroll to top to ensure full capture
-                window.scrollTo(0, 0);
-                
-                // Get actual dimensions
-                const rect = container.getBoundingClientRect();
-                const captureHeight = Math.max(container.scrollHeight, container.offsetHeight, rect.height);
-                
-                const canvas = await html2canvas(container, {
-                    scale: 2,
-                    useCORS: true,
-                    backgroundColor: '#ffffff',
-                    logging: true, // Enable for debugging
-                    width: 950,
-                    height: captureHeight,
-                    windowWidth: 1200,
-                    windowHeight: captureHeight + 100,
-                    scrollX: 0,
-                    scrollY: 0,
-                    x: 0,
-                    y: 0
-                });
-                
-                // Restore original styles
+
+            const restoreAll = () => {
                 container.style.width = originalStyles.containerWidth;
                 container.style.minWidth = originalStyles.containerMinWidth;
                 container.style.position = originalStyles.containerPosition;
@@ -1709,73 +1346,62 @@
                 document.body.style.overflow = originalStyles.bodyOverflow;
                 document.getElementById('capture-style')?.remove();
                 btnContainer.style.display = 'flex';
-                // Restore signature controls
                 sigActions.forEach((el, i) => el.style.display = prevSigDisplays[i] || 'flex');
-                
+            };
+
+            try {
+                await new Promise(resolve => setTimeout(resolve, 300));
+                window.scrollTo(0, 0);
+                const rect = container.getBoundingClientRect();
+                const captureHeight = Math.max(container.scrollHeight, container.offsetHeight, rect.height);
+                const canvas = await html2canvas(container, {
+                    scale: 2, useCORS: true, backgroundColor: '#ffffff',
+                    width: 950, height: captureHeight,
+                    windowWidth: 1200, windowHeight: captureHeight + 100,
+                    scrollX: 0, scrollY: 0, x: 0, y: 0
+                });
+                restoreAll();
+
                 const competitionName = document.getElementById('competition')?.value || 'Golf Round';
-                const dataURL = canvas.toDataURL('image/png');
-                const blob = dataURLtoBlob(dataURL);
-                
-                // Try native share with file
+                const blob = dataURLtoBlob(canvas.toDataURL('image/png'));
+
                 if (navigator.share) {
                     try {
                         const file = new File([blob], 'golf-scorecard.png', { type: 'image/png' });
-                        
                         if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                            await navigator.share({
-                                files: [file],
-                                title: 'Golf Scorecard',
-                                text: `Golf Scorecard - ${competitionName}`
-                            });
+                            await navigator.share({ files: [file], title: 'Golf Scorecard', text: `Golf Scorecard - ${competitionName}` });
                             return;
                         }
-                    } catch (e) {
-                        console.log('File share failed, trying fallback:', e);
-                    }
+                    } catch(e) { console.log('File share failed, trying fallback:', e); }
                 }
-                
-                // Fallback: Download and prompt
+
                 const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'golf-scorecard.png';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+                const a   = document.createElement('a');
+                a.href = url; a.download = 'golf-scorecard.png';
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-                
+
                 setTimeout(() => {
                     if (confirm('Image saved! Open WhatsApp to share?')) {
                         window.open('https://wa.me/?text=' + encodeURIComponent(`Golf Scorecard - ${competitionName}`), '_blank');
                     }
                 }, 300);
-                
-            } catch (err) {
-                // Restore styles on error
-                container.style.width = originalStyles.containerWidth;
-                container.style.minWidth = originalStyles.containerMinWidth;
-                container.style.position = originalStyles.containerPosition;
-                if (tableWrapper) tableWrapper.style.overflow = originalStyles.tableOverflow;
-                document.body.style.overflow = originalStyles.bodyOverflow;
-                document.getElementById('capture-style')?.remove();
-                btnContainer.style.display = 'flex';
-                // Restore signature controls
-                const sigActionsErr = document.querySelectorAll('.sig-actions');
-                sigActionsErr.forEach((el, i) => el.style.display = prevSigDisplays?.[i] || 'flex');
-                
+
+            } catch(err) {
+                restoreAll();
                 console.error('Share failed:', err);
                 alert('Sharing failed: ' + err.message);
             }
         }
 
-        // Initialize on page load
+        // ─── Boot ────────────────────────────────────────────────────────────────
         window.onload = function() {
-    	initScorecard();
-    	initSignaturePads();
-    	loadData();
-    	addSaveListeners();
-    	updateDividerPlayerNames();
-	};
+            initScorecard();       // renders with default data first
+            initSignaturePads();
+            loadData();            // overwrites with saved data (including courseData) if available
+            addSaveListeners();
+            updateDividerPlayerNames();
+        };
     </script>
 </body>
 </html>
