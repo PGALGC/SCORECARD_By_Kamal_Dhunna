@@ -191,22 +191,27 @@
             left: 0;
             background: white;
             z-index: 1;
+            font-size: 14px;
         }
         .yards-white {
             width: 45px;
+            font-size: 14px;
         }
         .yards-yellow {
             background: #FFD700 !important;
             width: 45px;
             font-weight: bold;
+            font-size: 14px;
         }
         .par-col {
             width: 30px;
             font-weight: bold;
+            font-size: 14px;
         }
         .scorecard-table td.si-col {
             background: #ffffff !important;
             width: 30px;
+            font-size: 14px;
         }
         .scorecard-table th.si-col {
             background: #f0f0f0 !important;
@@ -222,7 +227,7 @@
             width: 100%;
             border: none;
             text-align: center;
-            font-size: 16px;
+            font-size: 26px;
             font-weight: bold;
             padding: 8px 2px;
             min-height: 44px;
@@ -251,7 +256,7 @@
         .score-display {
             cursor: pointer;
             padding: 8px 4px;
-            font-size: 14px;
+            font-size: 22px;
             min-height: 44px;
             display: flex;
             align-items: center;
@@ -302,7 +307,7 @@
         .save-indicator.show { opacity: 1; }
         .stableford-pts { font-size: 11px; margin-top: 2px; }
         .stableford-pts strong { font-weight: bold; }
-        .gross-display { font-weight: bold; color: #000; }
+        .gross-display { font-weight: bold; color: #000; font-size: 22px; }
         .pts-0 { color: #FF69B4; font-weight: bold; }
         .pts-1 { color: #800080; font-weight: bold; }
         .pts-2 { color: #000000; font-weight: bold; }
@@ -316,6 +321,7 @@
             color: #ffffff;
             width: 45px;
             font-weight: bold;
+            font-size: 14px;
         }
         .yards-red input {
             color: #ffffff;
@@ -328,8 +334,8 @@
             color: #ffe5e5;
             opacity: 0.85;
         }
-        .par-red { color: #cc0000; width: 30px; font-weight: bold; }
-        .si-red { color: #cc0000; width: 30px; }
+        .par-red { color: #cc0000; width: 30px; font-weight: bold; font-size: 14px; }
+        .si-red { color: #cc0000; width: 30px; font-size: 14px; }
         .totals-row td { font-weight: bold; background: #f8f8f8; }
         .out-row td, .in-row td { font-weight: bold; background: #ffffcc; }
         .divider-row { background: #cc0000 !important; color: white !important; font-size: 10px !important; font-weight: bold; }
@@ -1014,10 +1020,10 @@
             return `
                 <tr>
                     <td class="hole-num">${holeData.hole}</td>
-                    <td class="yards-white"><input type="number" value="${holeData.white}" style="width:40px;text-align:center;border:none;" onchange="updateYardage(this, ${holeData.hole}, 'white')"></td>
-                    <td class="yards-yellow"><input type="number" value="${holeData.yellow}" style="width:40px;text-align:center;border:none;background:transparent;font-weight:bold;" onchange="updateYardage(this, ${holeData.hole}, 'yellow')"></td>
-                    <td class="par-col"><input type="number" value="${holeData.par}" style="width:25px;text-align:center;border:none;font-weight:bold;" onchange="updatePar(this, ${holeData.hole})"></td>
-                    <td class="si-col"><input type="number" value="${holeData.si}" style="width:25px;text-align:center;border:none;background:transparent;font-weight:bold;" onchange="updateSI(this, ${holeData.hole}, 'si')"></td>
+                    <td class="yards-white"><input type="number" value="${holeData.white}" style="width:40px;text-align:center;border:none;font-size:14px;" onchange="updateYardage(this, ${holeData.hole}, 'white')"></td>
+                    <td class="yards-yellow"><input type="number" value="${holeData.yellow}" style="width:40px;text-align:center;border:none;background:transparent;font-weight:bold;font-size:14px;" onchange="updateYardage(this, ${holeData.hole}, 'yellow')"></td>
+                    <td class="par-col"><input type="number" value="${holeData.par}" style="width:25px;text-align:center;border:none;font-weight:bold;font-size:14px;" onchange="updatePar(this, ${holeData.hole})"></td>
+                    <td class="si-col"><input type="number" value="${holeData.si}" style="width:25px;text-align:center;border:none;background:transparent;font-weight:bold;font-size:14px;" onchange="updateSI(this, ${holeData.hole}, 'si')"></td>
                     <td class="player-score" id="score_A_${holeData.hole}">
                         <input type="number" min="0" max="15" onchange="updateScore('A', ${holeData.hole}, this.value)" onkeydown="handleScoreKey(event, 'A', ${holeData.hole})">
                     </td>
@@ -1031,9 +1037,9 @@
                         <input type="number" min="0" max="15" onchange="updateScore('D', ${holeData.hole}, this.value)" onkeydown="handleScoreKey(event, 'D', ${holeData.hole})">
                     </td>
                     <td class="wlh-col"></td>
-                    <td class="yards-red"><input type="number" value="${holeData.red}" style="width:40px;text-align:center;border:none;color:#ffffff;font-weight:bold;background:transparent;" onchange="updateYardage(this, ${holeData.hole}, 'red')"></td>
-                    <td class="par-red"><input type="number" value="${holeData.parRed}" style="width:25px;text-align:center;border:none;color:#cc0000;font-weight:bold;background:transparent;" onchange="updateParRed(this, ${holeData.hole})"></td>
-                    <td class="si-red"><input type="number" value="${holeData.siRed}" style="width:25px;text-align:center;border:none;color:#cc0000;font-weight:bold;background:transparent;" onchange="updateSI(this, ${holeData.hole}, 'siRed')"></td>
+                    <td class="yards-red"><input type="number" value="${holeData.red}" style="width:40px;text-align:center;border:none;color:#ffffff;font-weight:bold;background:transparent;font-size:14px;" onchange="updateYardage(this, ${holeData.hole}, 'red')"></td>
+                    <td class="par-red"><input type="number" value="${holeData.parRed}" style="width:25px;text-align:center;border:none;color:#cc0000;font-weight:bold;background:transparent;font-size:14px;" onchange="updateParRed(this, ${holeData.hole})"></td>
+                    <td class="si-red"><input type="number" value="${holeData.siRed}" style="width:25px;text-align:center;border:none;color:#cc0000;font-weight:bold;background:transparent;font-size:14px;" onchange="updateSI(this, ${holeData.hole}, 'siRed')"></td>
                 </tr>`;
         }
 
