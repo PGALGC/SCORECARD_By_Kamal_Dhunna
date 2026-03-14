@@ -1317,37 +1317,24 @@
         }
 
         async function shareToWhatsApp() {
-            const container   = document.querySelector('.main-container');
+            const container    = document.querySelector('.main-container');
             const btnContainer = document.querySelector('.btn-container');
             const tableWrapper = document.querySelector('.table-wrapper');
-            btnContainer.style.display = 'none';
-            const sigActions = document.querySelectorAll('.sig-actions');
+            const sigActions   = document.querySelectorAll('.sig-actions');
             const prevSigDisplays = Array.from(sigActions).map(el => el.style.display);
-            sigActions.forEach(el => el.style.display = 'none');
 
             const originalStyles = {
-                containerWidth: container.style.width,
+                containerWidth:    container.style.width,
                 containerMinWidth: container.style.minWidth,
                 containerPosition: container.style.position,
-                tableOverflow: tableWrapper ? tableWrapper.style.overflow : '',
-                bodyOverflow: document.body.style.overflow
+                tableOverflow:     tableWrapper ? tableWrapper.style.overflow : '',
+                bodyOverflow:      document.body.style.overflow
             };
 
-            container.style.width = '950px';
-            container.style.minWidth = '950px';
-            container.style.position = 'relative';
-            if (tableWrapper) tableWrapper.style.overflow = 'visible';
-            document.body.style.overflow = 'visible';
-
-            const style = document.createElement('style');
-            style.id = 'capture-style';
-            style.textContent = `.yards-white,.yards-red,.wlh-col,.par-red,.si-red{display:table-cell!important}.scorecard-table{min-width:auto!important}.main-container,.table-wrapper{height:auto!important;overflow:visible!important}.header-info{display:flex!important}`;
-            document.head.appendChild(style);
-
             const restoreAll = () => {
-                container.style.width = originalStyles.containerWidth;
-                container.style.minWidth = originalStyles.containerMinWidth;
-                container.style.position = originalStyles.containerPosition;
+                container.style.width        = originalStyles.containerWidth;
+                container.style.minWidth     = originalStyles.containerMinWidth;
+                container.style.position     = originalStyles.containerPosition;
                 if (tableWrapper) tableWrapper.style.overflow = originalStyles.tableOverflow;
                 document.body.style.overflow = originalStyles.bodyOverflow;
                 document.getElementById('capture-style')?.remove();
@@ -1355,11 +1342,24 @@
                 sigActions.forEach((el, i) => el.style.display = prevSigDisplays[i] || 'flex');
             };
 
+            // Prepare for capture
+            btnContainer.style.display = 'none';
+            sigActions.forEach(el => el.style.display = 'none');
+            container.style.width    = '950px';
+            container.style.minWidth = '950px';
+            container.style.position = 'relative';
+            if (tableWrapper) tableWrapper.style.overflow = 'visible';
+            document.body.style.overflow = 'visible';
+
+            const captureStyle = document.createElement('style');
+            captureStyle.id = 'capture-style';
+            captureStyle.textContent = `.yards-white,.yards-red,.wlh-col,.par-red,.si-red{display:table-cell!important}.scorecard-table{min-width:auto!important}.main-container,.table-wrapper{height:auto!important;overflow:visible!important}.header-info{display:flex!important}`;
+            document.head.appendChild(captureStyle);
+
             try {
                 await new Promise(resolve => setTimeout(resolve, 300));
                 window.scrollTo(0, 0);
-                const rect = container.getBoundingClientRect();
-                const captureHeight = Math.max(container.scrollHeight, container.offsetHeight, rect.height);
+                const captureHeight = Math.max(container.scrollHeight, container.offsetHeight);
                 const canvas = await html2canvas(container, {
                     scale: 2, useCORS: true, backgroundColor: '#ffffff',
                     width: 950, height: captureHeight,
@@ -1368,9 +1368,8 @@
                 });
                 restoreAll();
 
-                const competitionName = document.getElementById('competition')?.value || 'Golf Round';
-
                 // Build player summary sorted by stableford points (highest first)
+                const competitionName = document.getElementById('competition')?.value || 'Golf Round';
                 const playerSummary = players.map(p => {
                     const nameEl = document.getElementById('player' + p);
                     const name = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'Player ' + p;
@@ -1379,114 +1378,53 @@
                         if (scores[p] && scores[p][i]) totalPts += (scores[p][i].stableford || 0);
                     }
                     return { name, pts: totalPts };
-                })
-                .filter(p => p.pts > 0)
-                .sort((a, b) => b.pts - a.pts);
+                }).filter(p => p.pts > 0).sort((a, b) => b.pts - a.pts);
 
-                // Draw summary text directly onto bottom of the scorecard image
+                // Append results summary to bottom of scorecard image
                 let finalCanvas = canvas;
                 if (playerSummary.length > 0) {
-                    const scale = 2;
-                    const lineHeight = 40 * scale;
-                    const padding = 20 * scale;
-                    const headerHeight = 50 * scale;
-                    const extraHeight = headerHeight + (playerSummary.length * lineHeight) + padding * 2;
-
-                    const newCanvas = document.createElement('canvas');
-                    newCanvas.width  = canvas.width;
-                    newCanvas.height = canvas.height + extraHeight;
-                    const ctx = newCanvas.getContext('2d');
-
-                    // Draw original scorecard at top
+                    const pad    = 20;
+                    const lh     = 50;
+                    const hdrH   = 55;
+                    const extra  = hdrH + (playerSummary.length * lh) + pad * 2;
+                    const c      = document.createElement('canvas');
+                    c.width      = canvas.width;
+                    c.height     = canvas.height + extra;
+                    const ctx    = c.getContext('2d');
                     ctx.drawImage(canvas, 0, 0);
-
-                    // Background for summary section
                     ctx.fillStyle = '#f5f5dc';
-                    ctx.fillRect(0, canvas.height, canvas.width, extraHeight);
-
-                    // Red top border
+                    ctx.fillRect(0, canvas.height, c.width, extra);
                     ctx.strokeStyle = '#cc0000';
-                    ctx.lineWidth = 6;
-                    ctx.beginPath();
-                    ctx.moveTo(0, canvas.height + 3);
-                    ctx.lineTo(canvas.width, canvas.height + 3);
-                    ctx.stroke();
-
-                    // Trophy + Results header
+                    ctx.lineWidth = 5;
+                    ctx.beginPath(); ctx.moveTo(0, canvas.height + 3); ctx.lineTo(c.width, canvas.height + 3); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(0, c.height - 3);      ctx.lineTo(c.width, c.height - 3);      ctx.stroke();
                     ctx.fillStyle = '#cc0000';
-                    ctx.font = `bold ${28 * scale}px Arial`;
-                    ctx.fillText('🏆 Results', padding, canvas.height + padding + (28 * scale));
-
-                    // Player lines
+                    ctx.font = 'bold 26px Arial';
+                    ctx.fillText('🏆 Results', pad, canvas.height + pad + 26);
                     playerSummary.forEach((p, i) => {
                         ctx.fillStyle = '#000000';
-                        ctx.font = `${22 * scale}px Arial`;
-                        ctx.fillText(`${p.name}  Stableford pts ${p.pts}`, padding, canvas.height + headerHeight + padding + (i * lineHeight) + (18 * scale));
+                        ctx.font = 'bold 22px Arial';
+                        ctx.fillText(`${p.name}   Stableford pts ${p.pts}`, pad, canvas.height + hdrH + pad + (i * lh) + 16);
                     });
-
-                    finalCanvas = newCanvas;
+                    finalCanvas = c;
                 }
+
+                // Build share text (summary as caption below image in WhatsApp)
+                const summaryText = playerSummary.length > 0
+                    ? '\n\n🏆 Results:\n' + playerSummary.map(p => `${p.name}  Stableford pts ${p.pts}`).join('\n')
+                    : '';
+                const shareText = `Golf Scorecard - ${competitionName}${summaryText}`;
 
                 const blob = dataURLtoBlob(finalCanvas.toDataURL('image/png'));
-                const shareText = `Golf Scorecard - ${competitionName}`;
-
-                // Build a small standalone results image
-                let resultsBlob = null;
-                if (playerSummary.length > 0) {
-                    const scale = 2;
-                    const lineHeight = 48 * scale;
-                    const padding = 30 * scale;
-                    const headerHeight = 60 * scale;
-                    const imgWidth = 950 * scale;
-                    const imgHeight = headerHeight + (playerSummary.length * lineHeight) + padding * 2;
-
-                    const rCanvas = document.createElement('canvas');
-                    rCanvas.width  = imgWidth;
-                    rCanvas.height = imgHeight;
-                    const rCtx = rCanvas.getContext('2d');
-
-                    // Background
-                    rCtx.fillStyle = '#f5f5dc';
-                    rCtx.fillRect(0, 0, imgWidth, imgHeight);
-
-                    // Red top border
-                    rCtx.strokeStyle = '#cc0000';
-                    rCtx.lineWidth = 8;
-                    rCtx.beginPath();
-                    rCtx.moveTo(0, 4);
-                    rCtx.lineTo(imgWidth, 4);
-                    rCtx.stroke();
-
-                    // Red bottom border
-                    rCtx.beginPath();
-                    rCtx.moveTo(0, imgHeight - 4);
-                    rCtx.lineTo(imgWidth, imgHeight - 4);
-                    rCtx.stroke();
-
-                    // Trophy + Results header
-                    rCtx.fillStyle = '#cc0000';
-                    rCtx.font = `bold ${32 * scale}px Arial`;
-                    rCtx.fillText('🏆 Results', padding, padding + (32 * scale));
-
-                    // Player lines
-                    playerSummary.forEach((p, i) => {
-                        rCtx.fillStyle = '#000000';
-                        rCtx.font = `bold ${26 * scale}px Arial`;
-                        rCtx.fillText(`${p.name}   Stableford pts ${p.pts}`, padding, headerHeight + padding + (i * lineHeight) + (20 * scale));
-                    });
-
-                    resultsBlob = dataURLtoBlob(rCanvas.toDataURL('image/png'));
-                }
 
                 if (navigator.share) {
                     try {
-                        const files = [new File([blob], 'golf-scorecard.png', { type: 'image/png' })];
-                        if (resultsBlob) files.push(new File([resultsBlob], 'golf-results.png', { type: 'image/png' }));
-                        if (navigator.canShare && navigator.canShare({ files })) {
-                            await navigator.share({ files, title: 'Golf Scorecard', text: shareText });
+                        const file = new File([blob], 'golf-scorecard.png', { type: 'image/png' });
+                        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                            await navigator.share({ files: [file], title: 'Golf Scorecard', text: shareText });
                             return;
                         }
-                    } catch(e) { console.log('File share failed, trying fallback:', e); }
+                    } catch(e) { console.log('File share failed:', e); }
                 }
 
                 const url = URL.createObjectURL(blob);
@@ -1494,7 +1432,6 @@
                 a.href = url; a.download = 'golf-scorecard.png';
                 document.body.appendChild(a); a.click(); document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-
                 setTimeout(() => {
                     if (confirm('Image saved! Open WhatsApp to share?')) {
                         window.open('https://wa.me/?text=' + encodeURIComponent(shareText), '_blank');
