@@ -1359,7 +1359,7 @@
             try {
                 await new Promise(resolve => setTimeout(resolve, 300));
                 window.scrollTo(0, 0);
-                const captureHeight = Math.max(container.scrollHeight, container.offsetHeight);
+                const captureHeight = container.scrollHeight;
                 const canvas = await html2canvas(container, {
                     scale: 2, useCORS: true, backgroundColor: '#ffffff',
                     width: 950, height: captureHeight,
@@ -1382,38 +1382,10 @@
 
                 // Append results summary to bottom of scorecard image
                 let finalCanvas = canvas;
-                if (playerSummary.length > 0) {
-                    const pad    = 20;
-                    const lh     = 50;
-                    const hdrH   = 55;
-                    const extra  = hdrH + (playerSummary.length * lh) + pad * 2;
-                    const c      = document.createElement('canvas');
-                    c.width      = canvas.width;
-                    c.height     = canvas.height + extra;
-                    const ctx    = c.getContext('2d');
-                    ctx.drawImage(canvas, 0, 0);
-                    ctx.fillStyle = '#f5f5dc';
-                    ctx.fillRect(0, canvas.height, c.width, extra);
-                    ctx.strokeStyle = '#cc0000';
-                    ctx.lineWidth = 5;
-                    ctx.beginPath(); ctx.moveTo(0, canvas.height + 3); ctx.lineTo(c.width, canvas.height + 3); ctx.stroke();
-                    ctx.beginPath(); ctx.moveTo(0, c.height - 3);      ctx.lineTo(c.width, c.height - 3);      ctx.stroke();
-                    ctx.fillStyle = '#cc0000';
-                    ctx.font = 'bold 26px Arial';
-                    ctx.fillText('🏆 Results', pad, canvas.height + pad + 26);
-                    playerSummary.forEach((p, i) => {
-                        ctx.fillStyle = '#000000';
-                        ctx.font = 'bold 22px Arial';
-                        ctx.fillText(`${p.name}   Stableford pts ${p.pts}`, pad, canvas.height + hdrH + pad + (i * lh) + 16);
-                    });
-                    finalCanvas = c;
-                }
 
-                // Build share text (summary as caption below image in WhatsApp)
                 const summaryText = playerSummary.length > 0
-                    ? '\n\n🏆 Results:\n' + playerSummary.map(p => `${p.name}  Stableford pts ${p.pts}`).join('\n')
+                    ? '🏆 Results:\n' + playerSummary.map(p => `${p.name}  Stableford pts ${p.pts}`).join('\n')
                     : '';
-                const shareText = `Golf Scorecard - ${competitionName}${summaryText}`;
 
                 const blob = dataURLtoBlob(finalCanvas.toDataURL('image/png'));
 
@@ -1421,7 +1393,7 @@
                     try {
                         const file = new File([blob], 'golf-scorecard.png', { type: 'image/png' });
                         if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                            await navigator.share({ files: [file], title: 'Golf Scorecard', text: shareText });
+                            await navigator.share({ files: [file], title: 'Golf Scorecard', text: summaryText });
                             return;
                         }
                     } catch(e) { console.log('File share failed:', e); }
@@ -1434,7 +1406,7 @@
                 URL.revokeObjectURL(url);
                 setTimeout(() => {
                     if (confirm('Image saved! Open WhatsApp to share?')) {
-                        window.open('https://wa.me/?text=' + encodeURIComponent(shareText), '_blank');
+                        window.open('https://wa.me/?text=' + encodeURIComponent(summaryText), '_blank');
                     }
                 }, 300);
 
