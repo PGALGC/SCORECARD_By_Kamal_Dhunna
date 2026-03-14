@@ -1369,13 +1369,121 @@
                 restoreAll();
 
                 const competitionName = document.getElementById('competition')?.value || 'Golf Round';
-                const blob = dataURLtoBlob(canvas.toDataURL('image/png'));
+
+                // Build player summary sorted by stableford points (highest first)
+                const playerSummary = players.map(p => {
+                    const nameEl = document.getElementById('player' + p);
+                    const name = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'Player ' + p;
+                    let totalPts = 0;
+                    for (let i = 1; i <= 18; i++) {
+                        if (scores[p] && scores[p][i]) totalPts += (scores[p][i].stableford || 0);
+                    }
+                    return { name, pts: totalPts };
+                })
+                .filter(p => p.pts > 0)
+                .sort((a, b) => b.pts - a.pts);
+
+                // Draw summary text directly onto bottom of the scorecard image
+                let finalCanvas = canvas;
+                if (playerSummary.length > 0) {
+                    const scale = 2;
+                    const lineHeight = 40 * scale;
+                    const padding = 20 * scale;
+                    const headerHeight = 50 * scale;
+                    const extraHeight = headerHeight + (playerSummary.length * lineHeight) + padding * 2;
+
+                    const newCanvas = document.createElement('canvas');
+                    newCanvas.width  = canvas.width;
+                    newCanvas.height = canvas.height + extraHeight;
+                    const ctx = newCanvas.getContext('2d');
+
+                    // Draw original scorecard at top
+                    ctx.drawImage(canvas, 0, 0);
+
+                    // Background for summary section
+                    ctx.fillStyle = '#f5f5dc';
+                    ctx.fillRect(0, canvas.height, canvas.width, extraHeight);
+
+                    // Red top border
+                    ctx.strokeStyle = '#cc0000';
+                    ctx.lineWidth = 6;
+                    ctx.beginPath();
+                    ctx.moveTo(0, canvas.height + 3);
+                    ctx.lineTo(canvas.width, canvas.height + 3);
+                    ctx.stroke();
+
+                    // Trophy + Results header
+                    ctx.fillStyle = '#cc0000';
+                    ctx.font = `bold ${28 * scale}px Arial`;
+                    ctx.fillText('🏆 Results', padding, canvas.height + padding + (28 * scale));
+
+                    // Player lines
+                    playerSummary.forEach((p, i) => {
+                        ctx.fillStyle = '#000000';
+                        ctx.font = `${22 * scale}px Arial`;
+                        ctx.fillText(`${p.name}  Stableford pts ${p.pts}`, padding, canvas.height + headerHeight + padding + (i * lineHeight) + (18 * scale));
+                    });
+
+                    finalCanvas = newCanvas;
+                }
+
+                const blob = dataURLtoBlob(finalCanvas.toDataURL('image/png'));
+                const shareText = `Golf Scorecard - ${competitionName}`;
+
+                // Build a small standalone results image
+                let resultsBlob = null;
+                if (playerSummary.length > 0) {
+                    const scale = 2;
+                    const lineHeight = 48 * scale;
+                    const padding = 30 * scale;
+                    const headerHeight = 60 * scale;
+                    const imgWidth = 950 * scale;
+                    const imgHeight = headerHeight + (playerSummary.length * lineHeight) + padding * 2;
+
+                    const rCanvas = document.createElement('canvas');
+                    rCanvas.width  = imgWidth;
+                    rCanvas.height = imgHeight;
+                    const rCtx = rCanvas.getContext('2d');
+
+                    // Background
+                    rCtx.fillStyle = '#f5f5dc';
+                    rCtx.fillRect(0, 0, imgWidth, imgHeight);
+
+                    // Red top border
+                    rCtx.strokeStyle = '#cc0000';
+                    rCtx.lineWidth = 8;
+                    rCtx.beginPath();
+                    rCtx.moveTo(0, 4);
+                    rCtx.lineTo(imgWidth, 4);
+                    rCtx.stroke();
+
+                    // Red bottom border
+                    rCtx.beginPath();
+                    rCtx.moveTo(0, imgHeight - 4);
+                    rCtx.lineTo(imgWidth, imgHeight - 4);
+                    rCtx.stroke();
+
+                    // Trophy + Results header
+                    rCtx.fillStyle = '#cc0000';
+                    rCtx.font = `bold ${32 * scale}px Arial`;
+                    rCtx.fillText('🏆 Results', padding, padding + (32 * scale));
+
+                    // Player lines
+                    playerSummary.forEach((p, i) => {
+                        rCtx.fillStyle = '#000000';
+                        rCtx.font = `bold ${26 * scale}px Arial`;
+                        rCtx.fillText(`${p.name}   Stableford pts ${p.pts}`, padding, headerHeight + padding + (i * lineHeight) + (20 * scale));
+                    });
+
+                    resultsBlob = dataURLtoBlob(rCanvas.toDataURL('image/png'));
+                }
 
                 if (navigator.share) {
                     try {
-                        const file = new File([blob], 'golf-scorecard.png', { type: 'image/png' });
-                        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                            await navigator.share({ files: [file], title: 'Golf Scorecard', text: `Golf Scorecard - ${competitionName}` });
+                        const files = [new File([blob], 'golf-scorecard.png', { type: 'image/png' })];
+                        if (resultsBlob) files.push(new File([resultsBlob], 'golf-results.png', { type: 'image/png' }));
+                        if (navigator.canShare && navigator.canShare({ files })) {
+                            await navigator.share({ files, title: 'Golf Scorecard', text: shareText });
                             return;
                         }
                     } catch(e) { console.log('File share failed, trying fallback:', e); }
@@ -1389,7 +1497,7 @@
 
                 setTimeout(() => {
                     if (confirm('Image saved! Open WhatsApp to share?')) {
-                        window.open('https://wa.me/?text=' + encodeURIComponent(`Golf Scorecard - ${competitionName}`), '_blank');
+                        window.open('https://wa.me/?text=' + encodeURIComponent(shareText), '_blank');
                     }
                 }, 300);
 
