@@ -432,6 +432,73 @@
         .player-header input { width: 50px; text-align: center; font-size: 10px; margin-top: 2px; }
         .handicap-input { background: #e0ffe0 !important; }
         h3 { margin: 5px 0; font-size: 14px; }
+        /* ─── WebKit (iPhone) specific fixes ─────────────────────────────── */
+        @supports (-webkit-appearance: none) {
+            input[type="number"], input[type="text"] {
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                -webkit-appearance: none;
+                appearance: none;
+            }
+            .scorecard-table td.si-col input, .scorecard-table td.si-red input {
+                width: 100% !important;
+                max-width: 35px !important;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+            .scorecard-table td, .scorecard-table th {
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+            .scorecard-table td.si-col, .scorecard-table td.si-red {
+                overflow: hidden !important;
+                text-overflow: clip !important;
+                -webkit-text-overflow: clip !important;
+            }
+            .player-score input {
+                -webkit-appearance: none;
+                appearance: none;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+            .yards-red input {
+                -webkit-text-fill-color: #ffffff;
+                text-fill-color: #ffffff;
+            }
+            .par-red input {
+                -webkit-text-fill-color: #cc0000;
+                text-fill-color: #cc0000;
+            }
+            input, select, textarea {
+                font-size: 16px !important;
+                -webkit-text-size-adjust: 100%;
+                text-size-adjust: 100%;
+            }
+            * {
+                -webkit-user-select: none;
+                -webkit-user-drag: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+            input, textarea {
+                -webkit-user-select: text;
+            }
+        }
+        @supports (-webkit-touch-callout: none) {
+            .scorecard-table td.si-col input, .scorecard-table td.si-red input {
+                width: 33px !important;
+                -webkit-appearance: none;
+                -webkit-border-radius: 0;
+                border-radius: 0;
+            }
+            body {
+                -webkit-text-size-adjust: 100%;
+                text-size-adjust: 100%;
+            }
+            .main-container {
+                -webkit-overflow-scrolling: touch;
+                overflow-scrolling: touch;
+            }
+        }
     </style>
 </head>
 <body>
