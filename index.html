@@ -194,14 +194,16 @@
             font-size: 14px;
         }
         .yards-white {
-            width: 45px;
+            width: 55px;
             font-size: 14px;
+            min-width: 55px;
         }
         .yards-yellow {
             background: #FFD700 !important;
-            width: 45px;
+            width: 55px;
             font-weight: bold;
             font-size: 14px;
+            min-width: 55px;
         }
         .par-col {
             width: 30px;
@@ -228,6 +230,14 @@
         .scorecard-table td.si-red input {
             width: 35px !important;
             font-size: 14px !important;
+        }
+        .scorecard-table td.yards-white input,
+        .scorecard-table td.yards-yellow input,
+        .scorecard-table td.yards-red input {
+            width: 100% !important;
+            max-width: 50px !important;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
         }
         .player-score {
             width: 55px;
@@ -337,9 +347,10 @@
         .yards-red {
             background: #c40000 !important;
             color: #ffffff;
-            width: 45px;
+            width: 55px;
             font-weight: bold;
             font-size: 14px;
+            min-width: 55px;
         }
         .yards-red input {
             color: #ffffff;
@@ -347,6 +358,10 @@
             background: transparent;
             font-weight: bold;
             caret-color: #ffffff;
+            width: 100% !important;
+            max-width: 50px !important;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
         }
         .yards-red input::placeholder {
             color: #ffe5e5;
@@ -446,11 +461,22 @@
                 -webkit-box-sizing: border-box;
                 box-sizing: border-box;
             }
+            .scorecard-table td.yards-white input, .scorecard-table td.yards-yellow input, .scorecard-table td.yards-red input {
+                width: 100% !important;
+                max-width: 50px !important;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+            }
             .scorecard-table td, .scorecard-table th {
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
             }
             .scorecard-table td.si-col, .scorecard-table td.si-red {
+                overflow: hidden !important;
+                text-overflow: clip !important;
+                -webkit-text-overflow: clip !important;
+            }
+            .scorecard-table td.yards-white, .scorecard-table td.yards-yellow, .scorecard-table td.yards-red {
                 overflow: hidden !important;
                 text-overflow: clip !important;
                 -webkit-text-overflow: clip !important;
