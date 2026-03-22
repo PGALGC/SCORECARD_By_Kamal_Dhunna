@@ -213,11 +213,21 @@
             width: 40px;
             font-size: 12px;
             min-width: 40px;
+            padding: 2px !important;
+            overflow: hidden;
         }
         .scorecard-table th.si-col {
             background: #f0f0f0 !important;
             width: 40px;
             min-width: 40px;
+        }
+        .scorecard-table td.si-col input {
+            width: 35px !important;
+            font-size: 14px !important;
+        }
+        .scorecard-table td.si-red input {
+            width: 35px !important;
+            font-size: 14px !important;
         }
         .player-score {
             width: 55px;
@@ -1038,7 +1048,7 @@
                     <td class="yards-white"><input type="number" value="${holeData.white}" style="width:40px;text-align:center;border:none;font-size:14px;" onchange="updateYardage(this, ${holeData.hole}, 'white')"></td>
                     <td class="yards-yellow"><input type="number" value="${holeData.yellow}" style="width:40px;text-align:center;border:none;background:transparent;font-weight:bold;font-size:14px;" onchange="updateYardage(this, ${holeData.hole}, 'yellow')"></td>
                     <td class="par-col"><input type="number" value="${holeData.par}" style="width:25px;text-align:center;border:none;font-weight:bold;font-size:14px;" onchange="updatePar(this, ${holeData.hole})"></td>
-                    <td class="si-col"><input type="number" value="${holeData.si}" style="width:25px;text-align:center;border:none;background:transparent;font-weight:bold;font-size:14px;" onchange="updateSI(this, ${holeData.hole}, 'si')"></td>
+                    <td class="si-col"><input type="number" value="${holeData.si}" style="width:35px;text-align:center;border:none;background:transparent;font-weight:bold;font-size:14px;" onchange="updateSI(this, ${holeData.hole}, 'si')"></td>
                     <td class="player-score" id="score_A_${holeData.hole}">
                         <input type="number" min="0" max="15" onchange="updateScore('A', ${holeData.hole}, this.value)" onkeydown="handleScoreKey(event, 'A', ${holeData.hole})">
                     </td>
@@ -1054,7 +1064,7 @@
                     <td class="wlh-col"></td>
                     <td class="yards-red"><input type="number" value="${holeData.red}" style="width:40px;text-align:center;border:none;color:#ffffff;font-weight:bold;background:transparent;font-size:14px;" onchange="updateYardage(this, ${holeData.hole}, 'red')"></td>
                     <td class="par-red"><input type="number" value="${holeData.parRed}" style="width:25px;text-align:center;border:none;color:#cc0000;font-weight:bold;background:transparent;font-size:14px;" onchange="updateParRed(this, ${holeData.hole})"></td>
-                    <td class="si-red"><input type="number" value="${holeData.siRed}" style="width:25px;text-align:center;border:none;color:#cc0000;font-weight:bold;background:transparent;font-size:14px;" onchange="updateSI(this, ${holeData.hole}, 'siRed')"></td>
+                    <td class="si-red"><input type="number" value="${holeData.siRed}" style="width:35px;text-align:center;border:none;color:#cc0000;font-weight:bold;background:transparent;font-size:14px;" onchange="updateSI(this, ${holeData.hole}, 'siRed')"></td>
                 </tr>`;
         }
 
