@@ -852,7 +852,8 @@
 
         // ─── Stableford calculation ─────────────────────────────────────────────
         function calculateStableford(gross, par, si, playingHcap) {
-            if (!gross || gross === '') return 0;
+            if (gross === null || gross === '' || gross === undefined) return 0;
+            if (parseInt(gross) === 0) return 0;
             let strokesReceived = 0;
             if (playingHcap >= 0) {
                 if (playingHcap >= si)      strokesReceived = 1;
@@ -930,13 +931,7 @@
             const gross = score.gross;
 
             if (gross !== null && gross !== '') {
-                if (parseInt(gross) === 0) {
-                    score.stableford = 'NS';
-                    cell.innerHTML = `
-                        <div class="score-display" onclick="editScore('${player}', ${hole})">
-                            <span class="gross-display">0</span>/<strong class="pts-ns">NS</strong>
-                        </div>`;
-                } else {
+                {
                     const par = getPar(hole);
                     const si  = getStrokeIndex(hole);
                     const playingHcap = getPlayingHcap(player);
